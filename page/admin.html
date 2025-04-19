@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+      <meta charset="UTF-8">
+      <title>HealthCare Admin</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
+      <link rel="stylesheet" href="/assets/style/base.css">
+      <link rel="stylesheet" href="/assets/style/main.css">
+      <link rel="stylesheet" href="/assets/style/admin.css">
+    </head>
+    <body>
+      <header>
+        <nav class="container">
+          <a href="#" class="nav__logo">
+            <img src="/assets/img/logo.png" alt="logo">
+            <span id="name">Admin Dashboard</span>
+        </a>
+        </nav>
+      </header>
+      <main>
+        <div class="sidebar">
+          <button class="menu-item active">
+            <i class="ri-menu-line"></i>
+          </button>
+          <button class="menu-item">
+            <i class="ri-home-line"></i>
+          </button>
+        </div> 
+
+        <div class="main-dashboard">
+
+          <div class="total">
+              <div class="card-total-patients">
+                <img src="/assets/img/patient.svg" alt="Total Patients">
+                Total Patients
+                1520
+              </div>
+              <div class="card-total-doctors">
+                <img src="/assets/img/staff.svg" alt="Total Doctors">
+                Total Doctors
+              </div>
+              <div class="card-total-iot-devices">
+                <img src="/assets/img/patient.svg" alt="đđ">
+              </div>
+          </div>
+
+          <div class="table-account">
+            <h2>Patient Admitted</h2>
+
+            <div class="search-bar">
+              <i class="ri-search-line search-icon"></i>
+              <input type="text" id="search-patient" placeholder="ID or Name">
+            </div>
+
+            <table class="patient-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>D.o.b</th>
+                  <th>Gender</th>
+                  <th>Height (cm)</th>
+                  <th>Weight (kg)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="patient-table-body">
+                <tr>
+                  <td>1</td>
+                  <td>P01</td>
+                  <td>Nguyễn Văn A</td>
+                  <td>01/01/1990</td>
+                  <td>Male</td>
+                  <td>170</td>
+                  <td>65</td>
+                  <td>
+                    <button onclick="editPatient(this)">Edit</button>
+                    <button onclick="deletePatient(this)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+              <tr id="no-result" style="display: none; text-align: center;">
+                <td colspan="8">Not found!</td>
+              </tr>
+            </table>
+
+
+          </div>
+        </div>
+        
+      </main>
+    </body>
+    <script src="/static/script.js" defer></script>
+    <script src="/static/admin.js" defer></script>
+</html>
