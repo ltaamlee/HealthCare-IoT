@@ -1,0 +1,204 @@
+:root{
+    --black-color: #000;
+    --white-color: #fff;
+    --primary-color: #5A81FA;
+    --second-color: #2c3d8f;
+    --third-color: #333;
+    --fourth-color: #c8d8d0;
+  
+    --science-blue: #003bdf;
+    --aqua: #02ffff;
+    --green: #4caf50;
+    --red: #f44336;
+    --background-color: #b7c5cb;
+  
+  
+    
+    --body-font: 'Montserrat', sans-serif;
+    --heading-font: 'DM Sans', sans-serif;
+    --heading-size: 3rem;
+    --heading1-size: 3rem;
+    --heading2-size: 2rem;
+    --heading3-size: 1.5rem;
+    --paragraph-size: 1.2rem;
+    --title-size: 1rem;
+  
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semi-bold: 800;
+    --font-bold: 900;
+}
+  
+@media screen and (max-width: 768px) {
+    :root {
+      --heading-size: 2.5rem;
+      --heading1-size: 2.0rem;
+      --heading2-size: 1.8rem;
+      --heading3-size: 1.2rem;
+      --paragraph-size: .8rem;
+      --title-size: .5rem;
+    }
+
+    .table-account {
+        overflow-x: auto;
+    }
+    
+    .patient-table {
+        min-width: 800px;
+    }
+}
+  
+@keyframes smoothTransition {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+  
+html,body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+
+.main-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+}
+
+.total {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+
+
+.card-total-patients,
+.card-total-doctors,
+.card-total-iot-devices{
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    font-family: var(--body-font);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ebe6e6;
+}
+
+.card-total-patients:hover,
+.card-total-doctors:hover,
+.card-total-iot-devices:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    background-color: var(--white-color)
+}
+
+.search-bar{
+    position: relative;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-bar input{
+    padding: .5rem .5rem;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    font-size: var(--title-size);
+    width: 200px;
+    transition: all 0.3 ease;
+}
+
+.search-bar input:focus{
+    border-color: var(--green);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #888;
+    pointer-events: none;
+}
+
+.table-account {
+    padding: 1rem 2rem;
+    background-color: transparent;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+  
+.table-account h2 {
+    margin-bottom: 1rem;
+    font-family: var(--body-font);
+    font-size: var(--heading3-size);
+    color: var(--science-blue);
+}
+  
+.patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--heading-font);
+}
+  
+.patient-table thead {
+    background-color: #f0f2f5;
+}
+  
+.patient-table th,
+.patient-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+  
+.patient-table th {
+    font-weight: bold;
+    color: var(--second-color);
+}
+  
+.patient-table tr:nth-child(even) {
+    background-color: #2e0606;
+}
+  
+.patient-table tr:hover {
+    background-color: #f1f1f1;
+}
+  
+
+.patient-table button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    margin: 0 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+  
+.patient-table button:hover {
+    opacity: 0.85;
+}
+  
+.patient-table button:nth-child(1) {
+    background-color: var(--green);
+    color: white;
+}
+  
+.patient-table button:nth-child(2) {
+    background-color: var(--red);
+    color: white;
+}
+  
