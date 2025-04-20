@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import { getAuth} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const id = row.id;  
     
                     if (id && row.name && row.email && row.phone) {
-                        // In ra thông tin bác sĩ sẽ được thêm vào
+
                         console.log("ID: ${id}, Name: ${row.name}, Email: ${row.email}, Phone: ${row.phone}");
     
 

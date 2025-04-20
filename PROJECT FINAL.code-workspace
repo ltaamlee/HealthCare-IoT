@@ -8,5 +8,7 @@
 			"path": "../test proj/test"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "HealthCare-IoT"
+	}
 }
