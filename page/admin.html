@@ -96,6 +96,18 @@
             <div class="doctor">
               <div class="table-title">
                 <h2>Doctor</h2>
+              
+                <div class="import-file">
+                  <input type="file" id="csvFile" accept=".csv" style="display:none;" />
+
+                  <button type="button" id="import-btn" class="import-csv">
+                    Import CSV
+                    <i class="ri-file-upload-line"></i>
+                  </button>
+
+                  <div id="status"></div>
+                </div>
+
                 <div class="search-bar">
                   <i class="ri-search-line search-icon"></i>
                   <input type="text" id="search-doctor" placeholder="ID or Name">
@@ -114,11 +126,6 @@
                 </thead>
                 <tbody id="doctor-table-body">
                   <tr>
-                    <td>1</td>
-                    <td>D01</td>
-                    <td>Đoàn Thị Thu Trang</td>
-                    <td>09xxxxxx</td>
-                    <td>thutrangyuri510@gmail.com</td>
                     <td>
                       <button onclick="editDoctor(this)">Edit</button>
                       <button onclick="deleteDoctor(this)">Delete</button>
@@ -139,5 +146,6 @@
       </footer>
     </body>
     <script src="/static/script.js" defer></script>
-    <script src="/static/admin.js" defer></script>
+    <script type="module" src="/static/admin.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </html>

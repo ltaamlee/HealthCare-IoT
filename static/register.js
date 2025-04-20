@@ -66,7 +66,7 @@ const dname = "Test Doctor";
 const demail = "test@example.com";
 const dphone = "094785236";
 
-writeDoctortData(dId, dname, demail, dphone);
+writeDoctorData(dId, dname, demail, dphone);
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
         var height = document.getElementById("height").value;
         var weight = document.getElementById("weight").value;
   
-
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
