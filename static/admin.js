@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
@@ -76,55 +76,69 @@ document.addEventListener("DOMContentLoaded", function () {
 
     file_input.addEventListener('change', async () => {
         const file = file_input.files[0];
-        if (!file) return;
-    
+        if (!file) {
+            status.innerHTML = "❌ Không có tệp nào được chọn.";
+            return;
+        }
+
         Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
             complete: async function (results) {
                 const data = results.data;
                 let success = 0, fail = 0;
-    
 
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
-                    const id = row.id;  
-    
-                    if (id && row.name && row.email && row.phone) {
-                        // In ra thông tin bác sĩ sẽ được thêm vào
-                        console.log("ID: ${id}, Name: ${row.name}, Email: ${row.email}, Phone: ${row.phone}");
-    
+                    const id = row.id;
+
+                    if (id && row.name && row.email && row.phone && row.password) {
+                        console.log(`ID: ${id}, Name: ${row.name}, Email: ${row.email}, Phone: ${row.phone}`);
 
                         const exists = await checkDoctorIdExists(id);
-                        console.log("Checking if doctor ID ${id} exists: ${exists}");
+                        console.log(`Checking if doctor ID ${id} exists: ${exists}`);
                         if (exists) {
                             fail++;
-                            status.innerHTML = "❌ ID bác sĩ ${id} đã tồn tại. Không thể thêm.";
-                            console.log("❌ ID bác sĩ ${id} đã tồn tại.");
+                            status.innerHTML = `❌ ID bác sĩ ${id} đã tồn tại. Không thể thêm.`;
+                            console.log(`❌ ID bác sĩ ${id} đã tồn tại.`);
                         } else {
-                            // insert to firebase db
-                            const refDoc = ref(db, "doctors/" + id);
-                            set(refDoc, {
-                                name: row.name,
-                                email: row.email,
-                                phone: row.phone,
-                                role: "doctor"
-                            }).then(() => {
+                            try {
+                                // Create user account in Firebase Authentication
+                                const auth = getAuth();
+                                await createUserWithEmailAndPassword(auth, row.email, row.password);
+
+                                // Insert doctor data into Firebase Realtime Database
+                                const refDoc = ref(db, "doctors/" + id);
+                                await set(refDoc, {
+                                    name: row.name,
+                                    email: row.email,
+                                    password: row.password,
+                                    phone: row.phone,
+                                    role: "doctor"
+                                });
+
                                 success++;
-                                status.innerHTML = "✅ Đã import ${success} bác sĩ";
-                                console.log("✅ Đã import bác sĩ ${id}");
-                            }).catch((err) => {
+                                status.innerHTML = `✅ Đã import ${success} bác sĩ`;
+                                console.log(`✅ Đã import bác sĩ ${id}`);
+                            } catch (err) {
                                 console.error("❌ Lỗi:", err);
                                 fail++;
-                                console.log("❌ Lỗi khi thêm bác sĩ ${id}");
-                            });
-                        } 
+                                console.log(`❌ Lỗi khi thêm bác sĩ ${id}`);
+                            }
+                        }
+                    } else {
+                        fail++;
+                        console.log(`❌ Dòng dữ liệu không hợp lệ: ${JSON.stringify(row)}`);
                     }
                 }
-    
+
                 if (fail > 0) {
-                    status.innerHTML += "<br>❌ Có ${fail} dòng bị lỗi.";
+                    status.innerHTML += `<br>❌ Có ${fail} dòng bị lỗi.`;
                 }
+            },
+            error: function (err) {
+                console.error("❌ Lỗi khi phân tích tệp CSV:", err);
+                status.innerHTML = "❌ Lỗi khi phân tích tệp CSV.";
             }
         });
     });
@@ -144,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${id}</td>
             <td>${name}</td>
             <td>${phone}</td>
+            <td>${password}</td>
             <td>${email}</td>
             <td>
                 <button onclick="editDoctor(this)">Edit</button>
@@ -152,6 +167,18 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         doctorBody.appendChild(row);
         noResultDoctorRow.style.display = "none";
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                alert("Login success!");
+                console.log("User:", user);
+                window.location.href = "/page/dashboard.html"; 
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+                console.error(error);
+            });
     }
 
     // Fetch doctors and display them on the table
