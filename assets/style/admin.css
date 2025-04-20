@@ -134,12 +134,6 @@ html,body{
     pointer-events: none;
 }
 
-#import-btn{
-    background-color: #5656fe;
-    color: var(--white-color);
-
-}
-
 .patient,
 .doctor{
     margin: 2rem;
@@ -229,4 +223,3 @@ html,body{
     background-color: var(--red);
     color: white;
 }
-  
