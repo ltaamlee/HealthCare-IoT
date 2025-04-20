@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function displayPatients(patients) {
-        const patientBody = document.getElementById("patient-table-body"); // Reference to the table body
+        const patientBody = document.getElementById("patient-table-body");
         const noResultPatientRow = document.getElementById("no-patient-result");
     
         patientBody.innerHTML = ''; 
@@ -244,8 +244,7 @@ window.editDoctor = function (btn) {
 window.deletePatient = function (btn) {
     const row = btn.closest("tr");
     const patientId = row.cells[1].textContent; 
-    deleteUserFromAuthentication(patientId);
-
+    
     const patientRef = ref(db, 'patients/' + patientId);
     remove(patientRef)
         .then(() => {
