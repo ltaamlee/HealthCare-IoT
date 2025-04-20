@@ -13,28 +13,34 @@
       </header>
       <main>
         <div class="container" id="login-form">
-            <form action="/page/login.html"  method="get">
+            <div class="left-section">
+                <form>
+                    <div class="login-form">
+                        <!-- Email and Password -->
+                        <div class="login-form__input">
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="login-form__input">
+                            <input type="password" id="password" name="password"  placeholder="Password" required>
+                        </div>
+    
+                        <!-- Log In Submit -->
+                        <button class="login-btn" id="submit" type="submit">
+                            Log In
+                        </button>
+                        <span class="login-form__register">
+                            <a href="/page/register.html">Don't have an account? Register</a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="right-section">
                 <a href="/page/home.html" class="nav__logo">
                     <img src="/assets/img/logo.png" alt="logo">
                 </a>
-                <div class="login-form">
-                    <!-- Email and Password -->
-                    <div class="login-form__input">
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                    </div>
-                    <div class="login-form__input">
-                        <input type="password" id="password" name="password"  placeholder="Password" required>
-                    </div>
-
-                    <!-- Log In Submit -->
-                    <button class="login-btn" id="submit" type="submit">
-                        Log In
-                    </button>
-                    <span class="login-form__register">
-                        <a href="/page/register.html">Don't have an account? Register</a>
-                    </span>
-                </div>
-            </form>
+                <div id="login-img" style="width:350px; height: 350px;"></div>
+            <div>         
         </div>
       </main>
       <footer>
@@ -42,5 +48,15 @@
       </footer>
     </body>
     <script src="/static/script.js" defer></script>
+    <script src="https://unpkg.com/lottie-web"></script>
     <script type="module" src="/static/login.js" defer></script>
+    <script>
+        lottie.loadAnimation({
+            container: document.getElementById('login-img'), 
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/static/login-img.json',
+          });
+    </script>
 </html>
