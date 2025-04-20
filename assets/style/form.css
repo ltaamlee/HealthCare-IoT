@@ -121,6 +121,7 @@ h1 {
 input[type="text"],
 input[type="email"], 
 input[type="password"],
+input[type="tel"],
 input[type="date"],
 #gender,
 input[type="number"]{
