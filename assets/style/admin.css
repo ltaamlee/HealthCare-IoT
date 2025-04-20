@@ -102,12 +102,13 @@ html,body{
     background-color: var(--white-color)
 }
 
-.search-bar,
-.import-file{
+.search-bar{
     position: relative;
     margin-bottom: 1rem;
     display: flex;
     justify-content: flex-end;
+    gap: 1rem;
+    
 }
 
 .search-bar input{
@@ -116,6 +117,7 @@ html,body{
     border-radius: 1rem;
     font-size: var(--title-size);
     width: 200px;
+    gap: 2rem;
     transition: all 0.3 ease;
 }
 

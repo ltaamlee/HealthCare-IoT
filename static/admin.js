@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
@@ -76,69 +76,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     file_input.addEventListener('change', async () => {
         const file = file_input.files[0];
-        if (!file) {
-            status.innerHTML = "❌ Không có tệp nào được chọn.";
-            return;
-        }
-
+        if (!file) return;
+    
         Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
             complete: async function (results) {
                 const data = results.data;
                 let success = 0, fail = 0;
+    
 
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
-                    const id = row.id;
-
-                    if (id && row.name && row.email && row.phone && row.password) {
-                        console.log(`ID: ${id}, Name: ${row.name}, Email: ${row.email}, Phone: ${row.phone}`);
+                    const id = row.id;  
+    
+                    if (id && row.name && row.email && row.phone) {
+                        // In ra thông tin bác sĩ sẽ được thêm vào
+                        console.log("ID: ${id}, Name: ${row.name}, Email: ${row.email}, Phone: ${row.phone}");
+    
 
                         const exists = await checkDoctorIdExists(id);
-                        console.log(`Checking if doctor ID ${id} exists: ${exists}`);
+                        console.log("Checking if doctor ID ${id} exists: ${exists}");
                         if (exists) {
                             fail++;
-                            status.innerHTML = `❌ ID bác sĩ ${id} đã tồn tại. Không thể thêm.`;
-                            console.log(`❌ ID bác sĩ ${id} đã tồn tại.`);
+                            status.innerHTML = "❌ ID bác sĩ ${id} đã tồn tại. Không thể thêm.";
+                            console.log("❌ ID bác sĩ ${id} đã tồn tại.");
                         } else {
-                            try {
-                                // Create user account in Firebase Authentication
-                                const auth = getAuth();
-                                await createUserWithEmailAndPassword(auth, row.email, row.password);
-
-                                // Insert doctor data into Firebase Realtime Database
-                                const refDoc = ref(db, "doctors/" + id);
-                                await set(refDoc, {
-                                    name: row.name,
-                                    email: row.email,
-                                    password: row.password,
-                                    phone: row.phone,
-                                    role: "doctor"
-                                });
-
+                            // insert to firebase db
+                            const refDoc = ref(db, "doctors/" + id);
+                            set(refDoc, {
+                                name: row.name,
+                                email: row.email,
+                                phone: row.phone,
+                                password: row.password,
+                                role: "doctor"
+                            }).then(() => {
                                 success++;
-                                status.innerHTML = `✅ Đã import ${success} bác sĩ`;
-                                console.log(`✅ Đã import bác sĩ ${id}`);
-                            } catch (err) {
+                                status.innerHTML = "✅ Đã import ${success} bác sĩ";
+                                console.log("✅ Đã import bác sĩ ${id}");
+                            }).catch((err) => {
                                 console.error("❌ Lỗi:", err);
                                 fail++;
-                                console.log(`❌ Lỗi khi thêm bác sĩ ${id}`);
-                            }
-                        }
-                    } else {
-                        fail++;
-                        console.log(`❌ Dòng dữ liệu không hợp lệ: ${JSON.stringify(row)}`);
+                                console.log("❌ Lỗi khi thêm bác sĩ ${id}");
+                            });
+                        } 
                     }
                 }
-
+    
                 if (fail > 0) {
-                    status.innerHTML += `<br>❌ Có ${fail} dòng bị lỗi.`;
+                    status.innerHTML += "<br>❌ Có ${fail} dòng bị lỗi.";
                 }
-            },
-            error: function (err) {
-                console.error("❌ Lỗi khi phân tích tệp CSV:", err);
-                status.innerHTML = "❌ Lỗi khi phân tích tệp CSV.";
             }
         });
     });
@@ -150,6 +137,24 @@ document.addEventListener("DOMContentLoaded", function () {
         return snapshot.exists(); 
     }
 
+    // add patient to table from form register
+    function addPatientRow(no, id, name, dob, gender, admittedDate) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${no}</td>
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${dob}</td>
+            <td>${gender}</td>
+            <td>${admittedDate}</td>
+            <td>
+                <button onclick="editPatient(this)">Edit</button>
+                <button onclick="deletePatient(this)">Delete</button>
+            </td>
+        `;
+        document.getElementById("patient-table-body").appendChild(row);
+    }
+
     // add doctor to table
     function addDoctorRow(no, id, name, phone, email) {
         const row = document.createElement("tr");
@@ -158,7 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${id}</td>
             <td>${name}</td>
             <td>${phone}</td>
-            <td>${password}</td>
             <td>${email}</td>
             <td>
                 <button onclick="editDoctor(this)">Edit</button>
@@ -167,21 +171,44 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         doctorBody.appendChild(row);
         noResultDoctorRow.style.display = "none";
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                alert("Login success!");
-                console.log("User:", user);
-                window.location.href = "/page/dashboard.html"; 
-            })
-            .catch((error) => {
-                alert("Error: " + error.message);
-                console.error(error);
-            });
     }
 
-    // Fetch doctors and display them on the table
+
+    function displayPatients(patients) {
+        const patientBody = document.getElementById("patient-table-body"); // Reference to the table body
+        const noResultPatientRow = document.getElementById("no-patient-result");
+    
+        patientBody.innerHTML = ''; 
+    
+        let no = 1;
+        for (const id in patients) {
+            const patient = patients[id];
+            addPatientRow(no++, id, patient.name, patient.dob, patient.gender, patient.admittedDate);
+        }
+    
+        if (no === 1) {
+            noResultPatientRow.style.display = '';
+        } else {
+            noResultPatientRow.style.display = 'none';
+        }
+    }
+
+    function loadPatients() {
+        const patientsRef = ref(db, 'patients/');
+        get(patientsRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+            const patients = snapshot.val();
+            displayPatients(patients);
+            } else {
+            console.log("❌ Không có dữ liệu bệnh nhân");
+            }
+        })
+        .catch((error) => {
+            console.error("❌ Lỗi khi lấy dữ liệu bệnh nhân:", error);
+        });
+    }
+    
     function loadDoctors() {
         const doctorsRef = ref(db, "doctors");
 
@@ -202,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    loadPatients();
     loadDoctors();
 });
 
@@ -210,6 +238,26 @@ window.editDoctor = function (btn) {
     const row = btn.closest("tr");
     alert("Edit: " + row.cells[2].textContent);
 };
+
+
+// Delete Patient
+window.deletePatient = function (btn) {
+    const row = btn.closest("tr");
+    const patientId = row.cells[1].textContent; 
+    deleteUserFromAuthentication(patientId);
+
+    const patientRef = ref(db, 'patients/' + patientId);
+    remove(patientRef)
+        .then(() => {
+            console.log("✅ Đã xóa bệnh nhân khỏi Realtime Database");
+            arlet("Deleted!");
+        })
+        .catch((error) => {
+            console.error("❌ Lỗi khi xóa bệnh nhân:", error);
+        });
+};
+
+
 
 // Delete doctor
 window.deleteDoctor = function (btn) {

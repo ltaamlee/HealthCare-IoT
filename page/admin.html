@@ -98,6 +98,10 @@
                 <h2>Doctor</h2>
               
                 <div class="import-file">
+                  <div id="status"></div>
+                </div>
+
+                <div class="search-bar">
                   <input type="file" id="csvFile" accept=".csv" style="display:none;" />
 
                   <button type="button" id="import-btn" class="import-csv">
@@ -105,10 +109,6 @@
                     <i class="ri-file-upload-line"></i>
                   </button>
 
-                  <div id="status"></div>
-                </div>
-
-                <div class="search-bar">
                   <i class="ri-search-line search-icon"></i>
                   <input type="text" id="search-doctor" placeholder="ID or Name">
                 </div>
@@ -121,12 +121,16 @@
                     <th>Full Name</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody id="doctor-table-body">
                   <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <td>
                       <button onclick="editDoctor(this)">Edit</button>
                       <button onclick="deleteDoctor(this)">Delete</button>

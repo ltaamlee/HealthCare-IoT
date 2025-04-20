@@ -42,6 +42,7 @@ function writeDoctorData(userId, name, email, phone) {
       name: name,
       email: email,
       phone: phone,
+      password: password,
       role: "doctor"
   }).then(() => {
       console.log("✅ Doctor data saved.");
