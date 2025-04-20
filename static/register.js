@@ -17,16 +17,17 @@ const firebaseConfig = {
   const db = getDatabase(app);
   const auth = getAuth(app);
 
-  function writePatientData(userId, name, email, dob, gender, height, weight) {
+function writePatientData(userId, name, email, phone, dob, gender, height, weight) {
     const dbRef = ref(db, 'patients/' + userId);
     set(dbRef, {
       name: name,
       email: email,
-      password: password,
+      phone: phone,
       dob: dob,
       gender: gender,
       height: height,
-      weight: weight
+      weight: weight,
+      role: "patient"
     })
     .then(() => {
       console.log("✅ Patient data saved.");
@@ -35,16 +36,37 @@ const firebaseConfig = {
     });
 }
 
+function writeDoctorData(userId, name, email, phone) {
+  const dbRef = ref(db, 'doctors/' + userId);
+  set(dbRef, {
+      name: name,
+      email: email,
+      phone: phone,
+      role: "doctor"
+  }).then(() => {
+      console.log("✅ Doctor data saved.");
+  }).catch((error) => {
+      console.error("❌ Error saving doctor data:", error);
+  });
+}
 
 const userId = "testUserId";
 const name = "Test User";
 const email = "test@example.com";
 const dob = "04/12/2005";
+const phone ="0949323963";
 const gender ="Female";
 const height = 170;
 const weight = 50;
 
-writePatientData(userId, name, email, dob, gender, height, weight);
+writePatientData(userId, name, email, phone, dob, gender, height, weight);
+
+const dId = "testDoctorId";
+const dname = "Test Doctor";
+const demail = "test@example.com";
+const dphone = "094785236";
+
+writeDoctortData(dId, dname, demail, dphone);
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
@@ -55,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         var username = document.getElementById("username").value;
+        var phone = document.getElementById("phone").value;
         var dob = document.getElementById("dob").value;
         var gender = document.getElementById("gender").value;
         var height = document.getElementById("height").value;
@@ -64,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                writePatientData(user.uid, username, email, dob, gender, height, weight);
+                writePatientData(user.uid, username, email, phone, dob, gender, height, weight);
 
                 alert("Register success!");
                 window.location.href = "/page/login.html";
@@ -73,13 +96,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Error: " + error.message);
                 console.error("Registration error:", error);
             });
-    });
-
-    lottie.loadAnimation({
-      container: document.getElementById('login-img'), 
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/static/login-img.json',
     });
 });

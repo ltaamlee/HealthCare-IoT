@@ -34,6 +34,10 @@
                         <div class="register-form__input">
                             <input type="password" id="password" name="password" placeholder="Password" required>
                         </div>
+
+                        <div class="register-form__input">
+                            <input type="tel" id="phone" name="phone" placeholder="Phone" pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}">
+                        </div>
     
                         <!-- DOB and Gender -->
                         <div class="register-form__input-group">
@@ -80,4 +84,13 @@
     <script src="https://unpkg.com/lottie-web"></script>
     <script src="/static/script.js" defer></script>
     <script type="module" src="/static/register.js" defer></script>
+    <script>
+        lottie.loadAnimation({
+            container: document.getElementById('login-img'), 
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/static/login-img.json',
+          });
+    </script>
 </html>
