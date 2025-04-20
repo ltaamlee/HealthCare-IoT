@@ -17,36 +17,43 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
 
-onAuthStateChanged(auth, (user) => {
+document.addEventListener("DOMContentLoaded", () => {
+  const greetingText = document.getElementById("name");
+
+  onAuthStateChanged(auth, (user) => {
     if (user) {
-      const uid = user.uid;
-  
-      const userRef = ref(db, 'users/' + uid);
-      get(userRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            const username = data.username; 
-  
-            const nameEl = document.getElementById("name");
-            const now = new Date();
-            const hours = now.getHours();
-            let greeting = "Good morning";
-            if (hours >= 12 && hours < 18) {
-                greeting = "Good afternoon";
-            } else if (hours >= 18) {
-                greeting = "Good evening";
-            }
-            nameEl.textContent = `${greeting}, ${username}!`; 
+      const userId = user.uid;
+      const dbRef = ref(db, 'patients/' + userId);
+
+      get(dbRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const name = userData.name || "User";
+          const now = new Date();
+          const hour = now.getHours();
+          let greeting = "Hello";
+
+          if (hour >= 5 && hour < 12) {
+            greeting = "☀️ Good Morning";
+          } else if (hour >= 12 && hour < 18) {
+            greeting = "🌤️ Good Afternoon";
           } else {
-            console.log("No data available");
+            greeting = "🌙 Good Evening";
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching username:", error);
-        });
+
+          if (greetingText) {
+            greetingText.textContent = `${greeting}, ${name}!`;
+          }
+        } else {
+          console.error("❌ No data found for this user.");
+        }
+      }).catch((error) => {
+        console.error("❌ Error getting user data:", error);
+      });
     } else {
-      window.location.href = "/page/login.html";
+      console.warn("⚠️ No user is logged in.");
+      greetingText.textContent = "Hello, Guest!";
     }
   });
+});
   

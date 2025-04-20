@@ -132,6 +132,31 @@ html,body{
     pointer-events: none;
 }
 
+.clear-search-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #888;
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+}
+
+.patient,
+.doctor{
+    margin: 2rem;
+}
+
+.table-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .table-account {
     padding: 1rem 2rem;
     background-color: transparent;
@@ -147,38 +172,46 @@ html,body{
     color: var(--science-blue);
 }
   
-.patient-table {
+.patient-table,
+.doctor-table {
     width: 100%;
     border-collapse: collapse;
     font-family: var(--heading-font);
 }
   
-.patient-table thead {
+.patient-table thead,
+.doctor-table thead {
     background-color: #f0f2f5;
 }
   
 .patient-table th,
-.patient-table td {
+.patient-table td,
+.doctor-table th,
+.doctor-table td {
     padding: 12px 16px;
     text-align: center;
     border: 1px solid #ddd;
 }
   
-.patient-table th {
+.patient-table th,
+.doctor-table th {
     font-weight: bold;
     color: var(--second-color);
 }
   
-.patient-table tr:nth-child(even) {
+.patient-table tr:nth-child(even),
+.doctor-table tr:nth-child(even) {
     background-color: #2e0606;
 }
   
-.patient-table tr:hover {
+.patient-table tr:hover,
+.doctor-table tr:hover {
     background-color: #f1f1f1;
 }
   
 
-.patient-table button {
+.patient-table button,
+.doctor-table button {
     padding: 6px 12px;
     border: none;
     border-radius: 6px;
@@ -188,16 +221,19 @@ html,body{
     transition: background-color 0.2s ease;
 }
   
-.patient-table button:hover {
+.patient-table button:hover,
+.doctor-table button:hover {
     opacity: 0.85;
 }
   
-.patient-table button:nth-child(1) {
+.patient-table button:nth-child(1),
+.doctor-table button:nth-child(1) {
     background-color: var(--green);
     color: white;
 }
   
-.patient-table button:nth-child(2) {
+.patient-table button:nth-child(2),
+.doctor-table button:nth-child(2) {
     background-color: var(--red);
     color: white;
 }
