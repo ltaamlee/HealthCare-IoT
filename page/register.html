@@ -7,52 +7,77 @@
       <link rel="stylesheet" href="/assets/style/base.css">
       <link rel="stylesheet" href="/assets/style/form.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
-      <script src="/static/script.js" defer></script>
-      <script type="module" src="/static/register.js" defer></script>
     </head>
     <body>
       <header> 
       </header>
       <main>
         <div class="container" id="register-form">
-            <form>
+            <div class="left-section">
                 <a href="/page/home.html" class="nav__logo">
                     <img src="/assets/img/logo.png" alt="logo">
                 </a>
-                <div class="register-form">
-                    <div class="register-form__input">
-                        <input type="text" id="username" name="username" placeholder="Your Name" required>
-                    </div>
-                    <div class="register-form__input">
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                    </div>
-                    <div class="register-form__input">
-                        <input type="password" id="password" name="password"  placeholder="Password" required>
-                    </div>
-                    <div class="register-form__input">
-                        <input type="text" id="dob" name="dob" placeholder="Date of birth" required>
-                    </div> 
-                    <div class="register-form__input">
-                        <input type="text" id="gender" name="gender" placeholder="Gender" required>
-                    </div>
-                    <div class="register-form__input">
-                        <input type="text" id="height" name="height" placeholder="Height (cm)" required>
-                    </div>  
-                    <div class="register-form__input">
-                        <input type="text" id="weight" name="weight" placeholder="Weight (kg)" required>
-                    </div> 
-                    <button class="register-btn" id="submit" type="submit">
-                        Sign Up
-                    </button>
-                    <span class="register-form__login">
-                        <a href="/page/login.html">Already have an account? Login</a>
-                    </span>
-                </div>
-            </form>
+                <div id="login-img" style="width:350px; height: 350px;"></div>
+            </div>
+            
+            <div class="right-section">
+                <form>
+                    <div class="register-form">
+    
+                        <!-- Name - Email - Password -->
+                        <div class="register-form__input">
+                            <input type="text" id="username" name="username" placeholder="Your Name" required>
+                        </div>
+                        <div class="register-form__input">
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="register-form__input">
+                            <input type="password" id="password" name="password" placeholder="Password" required>
+                        </div>
+    
+                        <!-- DOB and Gender -->
+                        <div class="register-form__input-group">
+                            <div class="register-form__input">
+                                <input type="date" id="dob" name="dob" required>
+                            </div> 
+                            <div class="register-form__input">
+                                <select id="gender" name="gender" required>
+                                    <option value="" disabled selected>Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <!-- Height and Weight -->
+                        <div class="register-form__input-group">
+                            <div class="register-form__input">
+                              <input type="number" id="height" name="height" placeholder="Height (cm)" min="50" max="250" required>
+                            </div>  
+                            <div class="register-form__input">
+                              <input type="number" id="weight" name="weight" placeholder="Weight (kg)" min="20" max="200" required>
+                            </div>
+                        </div>
+                                                   
+    
+                        <!-- Register Submit -->
+                        <button class="register-btn" id="submit" type="submit">
+                            Sign Up
+                        </button>
+                        <span class="register-form__login">
+                            <a href="/page/login.html">Already have an account? Login</a>
+                        </span>
+                    </div>                
+                </form>
+            </div>
+    
         </div>
       </main>
       <footer>
         <p>Copyright &copy; <span id="year"></span> IOT_23 HCMC University of Technology and Education</p>
       </footer>
     </body>
+    <script src="https://unpkg.com/lottie-web"></script>
+    <script src="/static/script.js" defer></script>
+    <script type="module" src="/static/register.js" defer></script>
 </html>

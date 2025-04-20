@@ -26,6 +26,9 @@
           <button class="menu-item">
             <i class="ri-home-line"></i>
           </button>
+          <div class="menu-item">
+            <i class="ri-sd-card-mini-line"></i>          
+          </div>
         </div> 
 
         <div class="main-dashboard">
@@ -46,51 +49,94 @@
           </div>
 
           <div class="table-account">
-            <h2>Patient Admitted</h2>
+            <!-- Table for Patient -->
+            <div class="patient">
+              <div class="table-title">
+                <h2>Patient</h2>
+                <div class="search-bar">
+                  <i class="ri-search-line search-icon"></i>
+                  <input type="text" id="search-patient" placeholder="ID or Name">
+                </div>
+              </div>
 
-            <div class="search-bar">
-              <i class="ri-search-line search-icon"></i>
-              <input type="text" id="search-patient" placeholder="ID or Name">
+              <table class="patient-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>D.o.b</th>
+                    <th>Gender</th>
+                    <th>Admitted Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="patient-table-body">
+                  <tr>
+                    <td>1</td>
+                    <td>P01</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>01/01/1990</td>
+                    <td>Male</td>
+                    <td>20/04/2025</td>
+                    <td>
+                      <button onclick="editPatient(this)">Edit</button>
+                      <button onclick="deletePatient(this)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tr id="no-patient-result" style="display: none; text-align: center;">
+                  <td colspan="8">Not found!</td>
+                </tr>
+              </table>
             </div>
 
-            <table class="patient-table">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>ID</th>
-                  <th>Full Name</th>
-                  <th>D.o.b</th>
-                  <th>Gender</th>
-                  <th>Height (cm)</th>
-                  <th>Weight (kg)</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="patient-table-body">
-                <tr>
-                  <td>1</td>
-                  <td>P01</td>
-                  <td>Nguyễn Văn A</td>
-                  <td>01/01/1990</td>
-                  <td>Male</td>
-                  <td>170</td>
-                  <td>65</td>
-                  <td>
-                    <button onclick="editPatient(this)">Edit</button>
-                    <button onclick="deletePatient(this)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-              <tr id="no-result" style="display: none; text-align: center;">
-                <td colspan="8">Not found!</td>
-              </tr>
-            </table>
+            <hr>
 
-
+            <div class="doctor">
+              <div class="table-title">
+                <h2>Doctor</h2>
+                <div class="search-bar">
+                  <i class="ri-search-line search-icon"></i>
+                  <input type="text" id="search-doctor" placeholder="ID or Name">
+                </div>
+              </div>
+              <table class="doctor-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="doctor-table-body">
+                  <tr>
+                    <td>1</td>
+                    <td>D01</td>
+                    <td>Đoàn Thị Thu Trang</td>
+                    <td>09xxxxxx</td>
+                    <td>thutrangyuri510@gmail.com</td>
+                    <td>
+                      <button onclick="editDoctor(this)">Edit</button>
+                      <button onclick="deleteDoctor(this)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tr id="no-doctor-result" style="display: none; text-align: center;">
+                  <td colspan="8">Not found!</td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
         
       </main>
+      <footer>
+        <p>Copyright &copy; <span id="year"></span> IOT_23 HCMC University of Technology and Education</p>
+      </footer>
     </body>
     <script src="/static/script.js" defer></script>
     <script src="/static/admin.js" defer></script>

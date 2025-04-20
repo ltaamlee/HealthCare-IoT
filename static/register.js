@@ -17,24 +17,34 @@ const firebaseConfig = {
   const db = getDatabase(app);
   const auth = getAuth(app);
 
-function writeUserData(userId, name, email) {
-    const dbRef = ref(db, 'users/' + userId);
+  function writePatientData(userId, name, email, dob, gender, height, weight) {
+    const dbRef = ref(db, 'patients/' + userId);
     set(dbRef, {
-        username: name,
-        email: email
+      name: name,
+      email: email,
+      password: password,
+      dob: dob,
+      gender: gender,
+      height: height,
+      weight: weight
     })
     .then(() => {
-        console.log("✅ Data saved to database.");
+      console.log("✅ Patient data saved.");
     }).catch((error) => {
-        console.error("❌ Error saving data:", error);
+      console.error("❌ Error saving patient data:", error);
     });
 }
+
 
 const userId = "testUserId";
 const name = "Test User";
 const email = "test@example.com";
+const dob = "04/12/2005";
+const gender ="Female";
+const height = 170;
+const weight = 50;
 
-writeUserData(userId, name, email);
+writePatientData(userId, name, email, dob, gender, height, weight);
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
@@ -45,11 +55,17 @@ document.addEventListener("DOMContentLoaded", () => {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         var username = document.getElementById("username").value;
+        var dob = document.getElementById("dob").value;
+        var gender = document.getElementById("gender").value;
+        var height = document.getElementById("height").value;
+        var weight = document.getElementById("weight").value;
+  
 
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                writeUserData(user.uid, username, email);
+                writePatientData(user.uid, username, email, dob, gender, height, weight);
+
                 alert("Register success!");
                 window.location.href = "/page/login.html";
             })
@@ -57,5 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Error: " + error.message);
                 console.error("Registration error:", error);
             });
+    });
+
+    lottie.loadAnimation({
+      container: document.getElementById('login-img'), 
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/static/login-img.json',
     });
 });
