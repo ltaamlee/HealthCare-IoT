@@ -37,31 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((idTokenResult) => {
                 const role = idTokenResult.claims.role;
                 if (role === "admin") {
-                    console.log("✅ Admin đăng nhập");
+                    alert("✅ Admin login succeeded!");
                     window.location.href = "/page/admin.html";
                 } else {
-                    console.log("👤 User đăng nhập");
-                    window.location.href = "/page/login.html";
+                    alert("👤 User login succeeded!");
+                    window.location.href = "/page/dashboard.html";
                 }
             })
             .catch((error) => {
-                alert("Đăng nhập thất bại: " + error.message);
+                alert("Login : " + error.message);
                 console.error("Login Error:", error);
             });
-    });
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            user.getIdTokenResult().then((idTokenResult) => {
-                const role = idTokenResult.claims.role;
-                if (role === "admin") {
-                    console.log("✅ Admin đã đăng nhập");
-                    window.location.href = "/page/admin.html";
-                } else {
-                    console.log("👤 User đã đăng nhập");
-                    window.location.href = "/page/dashboard.html";
-                }
-            });
-        }
     });
 });

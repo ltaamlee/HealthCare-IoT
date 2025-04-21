@@ -13,11 +13,31 @@ const firebaseConfig = {
     measurementId: "G-9HMZFPDN7Z"
   };
 
-  const app = initializeApp(firebaseConfig); 
-  const db = getDatabase(app);
-  const auth = getAuth(app);
 
-function writePatientData(userId, name, email, phone, dob, gender, height, weight) {
+// ========= Connect with Firebase =========
+
+const app = initializeApp(firebaseConfig); 
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+
+// ========== Add Patient ==========
+
+//   patients/
+//    |___id_user
+//    |___username
+//    |___email
+//    |___password
+//    |___phone
+//    |___dob
+//    |___gender
+//    |___height
+//    |___weight
+//    |___admitted_date
+//    |___id_doctor
+//    |___role : patient
+
+function writePatientData(userId, name, email, phone, dob, gender, height, weight, admittedate) {
     const dbRef = ref(db, 'patients/' + userId);
     set(dbRef, {
       name: name,
@@ -27,7 +47,6 @@ function writePatientData(userId, name, email, phone, dob, gender, height, weigh
       gender: gender,
       height: height,
       weight: weight,
-      id_doctor: id_doctor,
       createdAt: Date.now(),
       role: "patient"
     })
@@ -38,13 +57,21 @@ function writePatientData(userId, name, email, phone, dob, gender, height, weigh
     });
 }
 
-function writeDoctorData(userId, name, email, phone) {
+//   doctors/
+//    |___id_doctor
+//    |___username
+//    |___email
+//    |___password
+//    |___phone
+//    |___role : doctor
+
+function writeDoctorData(userId, name, email, password, phone) {
   const dbRef = ref(db, 'doctors/' + userId);
   set(dbRef, {
       name: name,
       email: email,
-      phone: phone,
       password: password,
+      phone: phone,
       role: "doctor"
   }).then(() => {
       console.log("✅ Doctor data saved.");
@@ -53,24 +80,29 @@ function writeDoctorData(userId, name, email, phone) {
   });
 }
 
-const userId = "testUserId";
-const name = "Test User";
-const email = "test@example.com";
+// example data of patient and doctor
+const userId = "testPatientId";
+const name = "Test Patient";
+const email = "testpatient@example.com";
+const password = "111111";
 const dob = "04/12/2005";
 const phone ="0949323963";
 const gender ="Female";
 const height = 170;
 const weight = 50;
+const admittedate = "20/04/2025";
 
-writePatientData(userId, name, email, phone, dob, gender, height, weight);
+writePatientData(userId, name, email, password, phone, dob, gender, height, weight, admittedate);
 
 const dId = "testDoctorId";
 const dname = "Test Doctor";
-const demail = "test@example.com";
+const dpassword = "123456789";
+const demail = "testdoctor@example.com";
 const dphone = "094785236";
 
-writeDoctorData(dId, dname, demail, dphone);
+writeDoctorData(dId, dname, demail, dpassword, dphone);
 
+// ====================================================================== //
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
 
@@ -89,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                writePatientData(user.uid, username, email, phone, dob, gender, height, weight);
+                writePatientData(user.uid, username, email, password, phone, dob, gender, height, weight);
 
                 alert("Register success!");
                 window.location.href = "/page/login.html";
