@@ -46,9 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
     logout_btn?.addEventListener("click", () => {
         signOut(auth)
             .then(() => {
-                showPopup();
+                showPopup("Logout!");
                 setTimeout(() => {
-                    window.location.href = "/page/home.html";
+                    window.location.href = "/public/page/home.html";
                 }, 2000);
             })
             .catch((error) => {
@@ -163,7 +163,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); 
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`; 
+        return `${day}-${month}-${year}`; 
+    }
+
+    // function maskPassword(password) {
+    //     if (!password) return "";
+    //     if (password.length <= 2) return "*".repeat(password.length);
+    //     return password.slice(0, 2) + "*".repeat(password.length - 2);
+    // }   
+
+    function displayPatients(patients) {
+        patientBody.innerHTML = '';
+        let no = 1;
+        for (const id in patients) {
+            const p = patients[id];
+            const creationTime = p.createdAt;
+            console.log("Ngày tạo:", p.createdAt);
+
+            addPatientRow(no++, id, p.name, p.dob, p.gender, creationTime);
+        }
+        noResultPatientRow.style.display = no === 1 ? '' : 'none';
     }
 
     function addPatientRow(no, id, name, dob, gender, creationTime) {
@@ -177,15 +196,21 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${gender}</td>
             <td>${admittedDate}</td>
             <td>
-                <button onclick="editPatient(this)">Edit</button>
-                <button onclick="deletePatient(this)">Delete</button>
+            <button onclick="editPatient(this)">Edit</button>
+            <button onclick="deletePatient(this)">Delete</button>
             </td>
         `;
         patientBody.appendChild(row);
-        noResultPatientRow.display = "none";
+        noResultPatientRow.style.display = "none";
+    }
+   // ========== Load Patient to web ==========
+    function loadPatients() {
+        get(ref(db, 'patients/')).then((snapshot) => {
+            if (snapshot.exists()) displayPatients(snapshot.val());
+        }).catch((error) => console.error("❌ Lỗi lấy dữ liệu bệnh nhân:", error));
     }
 
-    // Add doctor to table
+
     function addDoctorRow(no, id, name, phone, email) {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -202,7 +227,9 @@ document.addEventListener("DOMContentLoaded", function () {
         noResultDoctorRow.style.display = "none";
     }
 
-    // sync to firebase auth
+    loadPatients();
+
+   // ========== Add account in Firebase ==========
     async function addDoctorToFirebase(id, name, email, phone, password) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -212,35 +239,10 @@ document.addEventListener("DOMContentLoaded", function () {
             uid: user.uid,
             role: "doctor"
         });
-
-        await set(ref(db, "users/" + user.uid), {
-            id, name, email, role: "doctor"
-        });
-
         console.log("✅ Bác sĩ đã được thêm!");
     }
 
-    function displayPatients(patients) {
-        patientBody.innerHTML = '';
-        let no = 1;
-        for (const id in patients) {
-            const p = patients[id];
-            const creationTime = p.createdAt;
-            console.log("Ngày tạo:", p.createdAt);
-
-            addPatientRow(no++, id, p.name, p.dob, p.gender, creationTime);
-        }
-        noResultPatientRow.style.display = no === 1 ? '' : 'none';
-    }
-
-
-    function loadPatients() {
-        get(ref(db, 'patients/')).then((snapshot) => {
-            if (snapshot.exists()) displayPatients(snapshot.val());
-        }).catch((error) => console.error("❌ Lỗi lấy dữ liệu bệnh nhân:", error));
-    }
-
-    
+   // ========== Load Doctor to web ==========
     function loadDoctors() {
         onValue(ref(db, "doctors"), (snapshot) => {
             doctorBody.innerHTML = "";
@@ -256,8 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-    loadPatients();
+    
     loadDoctors();
 });
 

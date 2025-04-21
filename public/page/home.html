@@ -4,28 +4,29 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Health Care IOT</title>
-      <link rel="stylesheet" href="/assets/style/base.css">
+      <link rel="stylesheet" href="/public/assets/style/base.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
     </head>
     <body>
       <header> 
         <nav class="container">
           <a href="#" class="nav__logo">
-            <img src="/assets/img/logo.png" alt="logo">
+            <img src="/public/assets/img/logo.png" alt="logo">
             <span>Health Care</span>
           </a>
 
           <div class="separator"></div>
 
           <ul class="nav__menu">
-            <li><a href="#about-us">About Us</a></li>
+            <li><a href="#iot-devices">IoT Devices</a></li>
             <li><a href="#technology">Technology</a></li>
+            <li><a href="#about-us">About Us</a></li>
           </ul>
         
           <div class="nav__auth">
-            <a href="/page/login.html" class="login-btn">Login</a>
-            <button id="get-started-btn" class="get-started-btn">
-              <a href="/page/register.html">Get Started</a>
+            <a href="/public/page/login.html" class="login-btn">Login</a>
+            <button type="button" id="register-btn" class="get-started-btn">
+              <a href="/public/page/register.html">Get Started</a>
               <i class="ri-arrow-right-up-line"></i>
             </button>
           </div>
@@ -33,28 +34,77 @@
       </header>
 
       <main>
-        <div class="about-us__content">
-          <div id="about-us">
-            <h1>About Us</h1>
-            <p>We are a team of passionate individuals dedicated to improving health care through technology.</p>
-            
-            <div class="about-us__list">
-              <div class="about-us__item">
-                <img src="/assets/img/logo.png" alt="Thanh Tam" class="about-us__img">
-                23110312 - Le Thi Thanh Tam
-              </div>
-
-              <div class="about-us__item">
-                <img src="/assets/img/logo.png" alt="Thu Trang" class="about-us__img">
-                23110347 - Doan Thi Thu Trang
-              </div>
-
-              <div class="about-us__item">
-                <img src="/assets/img/logo.png" alt="Tan Yen" class="about-us__img"> 
-                23110369- Nguyen Tan Yen
-              </div> 
-            </div>
+        <div class="who-we-are__content">
+          <div class="who-we-are__left">
+            <h1>Who we are?</h1>
+            <p>
+              We are the personal health monitoring system uses a smart wearable device integrated with an ESP32 microcontroller to collect data on heart rate, SpO₂, body temperature, and movement. This data is processed and visually displayed through a user-friendly application, allowing users to track their health status in real time and detect early signs of abnormalities.
+            </p>
           </div>
+          <div class="who-we-are__right" id="staff-home">
+          </div>
+        </div>
+
+        <div class="purpose-section__content">
+          <div id="purpose-section">
+            <h1>Purpose &amp; Significance</h1>
+            <div class="purpose-list">
+              <div class="purpose-item">Raise awareness<br>of personal health conditions</div>
+              <div class="purpose-item">Help users and<br>families feel more<br>secure in their daily lives</div>
+              <div class="purpose-item">Apply technology<br>to bridge personal<br>health with modern healthcare</div>
+              <div class="purpose-item">Contribute to the movement of<br>proactive and sustainable health care</div>
+            </div>
+        </div>
+        
+        <div class="mission-section__content">
+          <div class="mission-left">
+            <h1>🌱 My Mission</h1>
+          </div>
+          <div class="mission-right">
+            <p>
+              Our mission is to build a health monitoring system that is smart, accurate, and user-friendly, empowering individuals to take care of their health anytime, anywhere.
+              We aim to provide compact, energy-efficient wearable devices that monitor heart rate, SpO₂, body temperature, and detect falls. 
+              By integrating technology into daily life, we help users detect early signs of potential health issues, especially supporting the elderly and those with chronic conditions in maintaining better well-being.
+            </p>
+          </div>
+        </div>
+
+        <div class="iot-devices__content">
+          <div id="iot-devices">
+            <h1>IoT Devices</h1>
+            <p>We provide a variety of IoT devices to monitor your health.</p>
+
+            <div class="iot-devices__list">
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/esp32.png" alt="">
+                <p>ESP32</p>
+              </div>
+
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/max30102.png" alt="">
+                <p>MAX30102</p>
+              </div>
+
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/mpu6050.png" alt="">
+                <p>MPU6050</p>
+              </div>
+
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/ds18b20.png" alt="">
+                <p>DS18B20</p>
+              </div>
+
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/tp4056.png" alt="Tp4056">
+                <p>TP4056</p>
+              </div>
+
+              <div class="iot-devices__item">
+                <img src="/public/assets/img/medium/lipo.png" alt="Pin Lipo">
+                <p>Pin Li-po</p>
+              </div>
+            </div>
         </div>
 
         <div class="technology__content">
@@ -63,7 +113,31 @@
             <p>We are using the latest technology to provide the best service for our customers.</p>
 
             <div class="esp32">
-              <img src="/assets/img/medium/hemoglobin.png" alt="">
+              <img src="/public/assets/img/medium/hemoglobin.png" alt="">
+            </div>
+          </div>
+        </div>
+
+        <div class="about-us__content">
+          <div id="about-us">
+            <h1>About Us</h1>
+            <p>We are a team of passionate individuals dedicated to improving health care through technology.</p>
+            
+            <div class="about-us__list">
+              <div class="about-us__item">
+                <img src="/public/assets/img/logo.png" alt="Thanh Tam" class="about-us__img">
+                23110312 - Le Thi Thanh Tam
+              </div>
+
+              <div class="about-us__item">
+                <img src="/public/assets/img/logo.png" alt="Thu Trang" class="about-us__img">
+                23110347 - Doan Thi Thu Trang
+              </div>
+
+              <div class="about-us__item">
+                <img src="/public/assets/img/logo.png" alt="Tan Yen" class="about-us__img"> 
+                23110369- Nguyen Tan Yen
+              </div> 
             </div>
           </div>
         </div>
@@ -73,5 +147,14 @@
         <p>Copyright &copy; <span id="year"></span> IOT_23 HCMC University of Technology and Education</p>
       </footer>
     </body>      
-    <script src="/static/script.js" defer></script>
+    <script src="/public/static/script.js" defer></script>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById('staff-home'), 
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/public/static/staff-login.json' 
+      });
+    </script>
 </html>

@@ -19,3 +19,4 @@ async function createAdminAccount(email, password) {
 }
 
 createAdminAccount("healthcare@gmail.com", "IoT23172025");
+

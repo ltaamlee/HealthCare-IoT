@@ -37,12 +37,13 @@ const auth = getAuth(app);
 //    |___id_doctor
 //    |___role : patient
 
-function writePatientData(userId, name, email, phone, dob, gender, height, weight, admittedate) {
+function writePatientData(userId, name, email, password, phone, dob, gender, height, weight, admittedate) {
     const dbRef = ref(db, 'patients/' + userId);
     set(dbRef, {
       name: name,
       email: email,
       phone: phone,
+      password: password,
       dob: dob,
       gender: gender,
       height: height,
@@ -104,9 +105,10 @@ writeDoctorData(dId, dname, demail, dpassword, dphone);
 
 // ====================================================================== //
 document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
     const btn = document.getElementById("submit");
 
-    btn.addEventListener("click", (e) => {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         var email = document.getElementById("email").value;
@@ -117,14 +119,18 @@ document.addEventListener("DOMContentLoaded", () => {
         var gender = document.getElementById("gender").value;
         var height = document.getElementById("height").value;
         var weight = document.getElementById("weight").value;
+        if (!username || !email || !password || !phone || !dob || !gender || !height || !weight) {
+          alert("Please fill out all the fields."); 
+          e.preventDefault();
+      }
   
+        // ========== Create Account with email, password and insert to Firebase ==========
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                writePatientData(user.uid, username, email, password, phone, dob, gender, height, weight);
-
+                writePatientData(user.uid, username, email, password, phone, dob, gender, height, weight, admittedate);
                 alert("Register success!");
-                window.location.href = "/page/login.html";
+                window.location.href = "/public/page/login.html";
             })
             .catch((error) => {
                 alert("Error: " + error.message);
