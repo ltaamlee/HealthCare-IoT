@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -55,5 +55,21 @@ document.addEventListener("DOMContentLoaded", () => {
       greetingText.textContent = "Hello, Guest!";
     }
   });
+
+  const logout_btn = document.getElementById("logout");
+  logout_btn?.addEventListener("click", () => {
+      signOut(auth)
+          .then(() => {
+              showPopup();
+              setTimeout(() => {
+                  window.location.href = "/page/home.html";
+              }, 2000);
+          })
+          .catch((error) => {
+              console.error("Lỗi khi đăng xuất:", error);
+              showPopup("Lỗi đăng xuất: " + error.message);
+          });
+  });
+
 });
   

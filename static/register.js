@@ -27,6 +27,8 @@ function writePatientData(userId, name, email, phone, dob, gender, height, weigh
       gender: gender,
       height: height,
       weight: weight,
+      id_doctor: id_doctor,
+      createdAt: Date.now(),
       role: "patient"
     })
     .then(() => {
