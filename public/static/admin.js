@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
@@ -210,7 +210,6 @@ function loadPatients() {
     }).catch((error) => console.error("❌ Lỗi lấy dữ liệu bệnh nhân:", error));
 }
 
-
 function addDoctorRow(no, id, name, phone, email) {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -259,21 +258,49 @@ function loadDoctors() {
     });
 }
 
-loadDoctors();
+    loadDoctors();
 });
 
 // Delete patient
-window.deletePatient = function (btn) {
-const row = btn.closest("tr");
-const patientId = row.cells[1].textContent;
+window.deletePatient = async function (btn) {
+    const row = btn.closest("tr");
+    const patientId = row.cells[1].textContent;
 
-if (confirm(`Xóa bệnh nhân ID: ${patientId}?`)) {
-    remove(ref(db, "patients/" + patientId))
-        .then(() => {
+    console.log(`${patientId}`);
+    if (confirm(`Delete doctor ID: ${patientId}?`)) {
+        const patientRef = ref(db, "patients/" + patientId);
+        const snapshot = await get(patientRef);
+
+        if (!snapshot.exists()) {
+            alert("❌ Không tìm thấy bác sĩ này.");
+            return;
+        }
+
+        const patientData = snapshot.val();
+        const uid = patientId;
+
+        try {
+            // Gọi server để xóa user từ Firebase Authentication
+            const response = await fetch(`http://localhost:3000/delete-patient/${uid}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Lỗi không xác định.');
+            }
+
+            // Sau khi server xoá auth thành công, xoá Realtime Database
+            await remove(patientRef);
             row.remove();
-            alert("✅ Bệnh nhân đã bị xóa");
-        }).catch(err => console.error("❌ Lỗi:", err));
-}
+            alert(`✅ Bác sĩ với ID ${patientId} đã được xóa.`);
+
+        } catch (error) {
+            console.error("❌ Lỗi khi xóa:", error);
+            alert("Lỗi khi xóa: " + error.message);
+        }
+    }
 };
 
 // Edit doctor
@@ -283,15 +310,42 @@ window.editDoctor = function (btn) {
 };
 
 // Delete doctor
-window.deleteDoctor = function (btn) {
+window.deleteDoctor = async function (btn) {
     const row = btn.closest("tr");
     const doctorId = row.cells[1].textContent;
 
-    if (confirm(`Xóa bác sĩ ID: ${doctorId}?`)) {
-            remove(ref(db, "doctors/" + doctorId))
-                .then(() => {
-                    row.remove();
-                    alert("✅ Bác sĩ đã bị xóa");
-                }).catch(err => console.error("❌ Lỗi:", err));
+    if (confirm(`Delete doctor ID: ${doctorId}?`)) {
+        const doctorRef = ref(db, "doctors/" + doctorId);
+        const snapshot = await get(doctorRef);
+
+        if (!snapshot.exists()) {
+            alert("❌ Không tìm thấy bác sĩ này.");
+            return;
         }
+
+        const doctorData = snapshot.val();
+        const uid = doctorData.uid;
+
+        try {
+            // Gọi server để xóa user từ Firebase Authentication
+            const response = await fetch(`http://localhost:3000/delete-doctor/${uid}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Lỗi không xác định.');
+            }
+
+            // Sau khi server xoá auth thành công, xoá Realtime Database
+            await remove(doctorRef);
+            row.remove();
+            alert(`✅ Bác sĩ với ID ${doctorId} đã được xóa.`);
+
+        } catch (error) {
+            console.error("❌ Lỗi khi xóa:", error);
+            alert("Lỗi khi xóa: " + error.message);
+        }
+    }
 };
