@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-const serviceAccount = require("./health-care-iot-1b260-default-rtdb-export.json");
+const serviceAccount = require("../health-care-iot-1b260-firebase-adminsdk-fbsvc-30e2351607.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

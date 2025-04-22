@@ -1,8 +1,9 @@
 const admin = require('firebase-admin');
+const functions = require("firebase-functions");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { db, admin } = require("D:/IOT/PROJECT FINAL/HealthCare-IoT/createAdmin");
+const { db } = require("../health-care-iot-1b260-firebase-adminsdk-fbsvc-30e2351607.json");
 
 
 const app = express();
@@ -91,7 +92,4 @@ app.delete("/api/patients/:id", async (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+exports.api = functions.https.onRequest(app);
