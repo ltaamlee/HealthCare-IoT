@@ -14,8 +14,8 @@ admin.initializeApp({
 });
 
 app.delete('/delete-patient/:uid', async (req, res) => {
-    const uid = req.params.id;
-    console.log(uid);
+    const uid = req.params.uid;
+
     try {
         await admin.auth().deleteUser(uid);
             res.status(200).json({ message: `Deleted ${uid}` });
@@ -38,4 +38,5 @@ app.delete("/delete-doctor/:uid", async (req, res) => {
         }
 });
   
+
 app.listen(3000, () => console.log("Server is running on port 3000"));

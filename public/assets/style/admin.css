@@ -92,6 +92,8 @@ html,body{
     font-family: var(--body-font);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid #ebe6e6;
+    text-align: center;
+    font-size: var(--heading3-size);
 }
 
 .card-total-patients:hover,
@@ -101,6 +103,7 @@ html,body{
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     background-color: var(--white-color)
 }
+
 
 .search-bar,
 .import-file{
