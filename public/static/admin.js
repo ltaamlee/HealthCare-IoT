@@ -329,7 +329,6 @@ window.deletePatient = async function (btn) {
         const uid = patientId;
 
         try {
-            // Gọi server để xóa user từ Firebase Authentication
             const response = await fetch(`http://localhost:3000/delete-patient/${uid}`, {
                 method: 'DELETE'
             });
@@ -340,7 +339,6 @@ window.deletePatient = async function (btn) {
                 throw new Error(result.error || 'Lỗi không xác định.');
             }
 
-            // Sau khi server xoá auth thành công, xoá Realtime Database
             await remove(patientRef);
             row.remove();
             alert(`✅ Bác sĩ với ID ${patientId} đã được xóa.`);
@@ -378,7 +376,6 @@ window.deleteDoctor = async function (btn) {
         const uid = doctorData.uid;
 
         try {
-            // Gọi server để xóa user từ Firebase Authentication
             const response = await fetch(`http://localhost:3000/delete-doctor/${uid}`, {
                 method: 'DELETE'
             });
@@ -389,7 +386,6 @@ window.deleteDoctor = async function (btn) {
                 throw new Error(result.error || 'Lỗi không xác định.');
             }
 
-            // Sau khi server xoá auth thành công, xoá Realtime Database
             await remove(doctorRef);
             row.remove();
             alert(`✅ Bác sĩ với ID ${doctorId} đã được xóa.`);

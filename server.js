@@ -1,6 +1,7 @@
 const express = require('express');
 const admin = require('firebase-admin');
 const cors = require('cors');
+const functions = require('firebase-functions');
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,7 @@ const serviceAccount = require('../health-care-iot-1b260-firebase-adminsdk-fbsvc
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+
   databaseURL: "https://health-care-iot-1b260-default-rtdb.firebaseio.com"
 });
 
