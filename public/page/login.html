@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Health Care IOT</title>
-      <link rel="stylesheet" href="/assets/style/base.css">
-      <link rel="stylesheet" href="/assets/style/form.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Care IOT</title>
+    <link rel="stylesheet" href="/public/assets/style/base.css">
+    <link rel="stylesheet" href="/public/assets/style/form.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
     </head>
     <body>
-      <header> 
-      </header>
-      <main>
+    <header> 
+    </header>
+    <main>
         <div class="container" id="login-form">
-            <form action="/page/login.html"  method="get">
-                <a href="/page/home.html" class="nav__logo">
-                    <img src="/assets/img/logo.png" alt="logo">
-                </a>
-                <div class="login-form">
-                    <!-- Email and Password -->
-                    <div class="login-form__input">
-                        <input type="email" id="email" name="email" placeholder="Email" required>
+            <div class="left-section">
+                <form>
+                    <div class="login-form">
+                        <!-- Email and Password -->
+                        <div class="login-form__input">
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="login-form__input">
+                            <input type="password" id="password" name="password"  placeholder="Password" required>
+                        </div>
+    
+                        <!-- Log In Submit -->
+                        <button class="login-btn" id="submit" type="submit">
+                            Log In
+                        </button>
+                        <span class="login-form__register">
+                            <a href="/public/page/register.html">Don't have an account? Register</a>
+                        </span>
                     </div>
-                    <div class="login-form__input">
-                        <input type="password" id="password" name="password"  placeholder="Password" required>
-                    </div>
+                </form>
+            </div>
 
-                    <!-- Log In Submit -->
-                    <button class="login-btn" id="submit" type="submit">
-                        Log In
-                    </button>
-                    <span class="login-form__register">
-                        <a href="/page/register.html">Don't have an account? Register</a>
-                    </span>
-                </div>
-            </form>
             <div class="right-section">
-                <a href="/page/home.html" class="nav__logo">
-                    <img src="/assets/img/logo.png" alt="logo">
+                <a href="/public/page/home.html" class="nav__logo">
+                    <img src="/public/assets/img/logo.png" alt="logo">
                 </a>
                 <div id="login-img" style="width:350px; height: 350px;"></div>
             <div>         
         </div>
-      </main>
-      <footer>
+    </main>
+    <footer>
         <p>Copyright &copy; <span id="year"></span> IOT_23 HCMC University of Technology and Education</p>
-      </footer>
+    </footer>
     </body>
-    <script src="/static/script.js" defer></script>
-    <script type="module" src="/static/login.js" defer></script>
+    <script src="/public/static/script.js" defer></script>
     <script src="https://unpkg.com/lottie-web"></script>
-    <script type="module" src="/static/login.js" defer></script>
+    <script type="module" src="/public/static/login.js" defer></script>
     <script>
         lottie.loadAnimation({
             container: document.getElementById('login-img'), 
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: '/static/login-img.json',
-          });
+            path: '/public/static/login-img.json',
+        });
     </script>
 </html>

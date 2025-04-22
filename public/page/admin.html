@@ -5,15 +5,15 @@
       <title>HealthCare Admin</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css">
-      <link rel="stylesheet" href="/assets/style/base.css">
-      <link rel="stylesheet" href="/assets/style/main.css">
-      <link rel="stylesheet" href="/assets/style/admin.css">
+      <link rel="stylesheet" href="/public/assets/style/base.css">
+      <link rel="stylesheet" href="/public/assets/style/main.css">
+      <link rel="stylesheet" href="/public/assets/style/admin.css">
     </head>
     <body>
       <header>
         <nav class="container">
           <a href="#" class="nav__logo">
-            <img src="/assets/img/logo.png" alt="logo">
+            <img src="/public/assets/img/logo.png" alt="logo">
             <span id="name">Admin Dashboard</span>
         </a>
         </nav>
@@ -29,22 +29,25 @@
           <div class="menu-item">
             <i class="ri-sd-card-mini-line"></i>          
           </div>
+          <div class="menu-item">
+            <i class="ri-logout-box-line" id="logout"></i>
+          </div>
         </div> 
 
         <div class="main-dashboard">
 
           <div class="total">
               <div class="card-total-patients">
-                <img src="/assets/img/patient.svg" alt="Total Patients">
+                <img src="/public/assets/img/patient.svg" alt="Total Patients">
                 Total Patients
                 1520
               </div>
               <div class="card-total-doctors">
-                <img src="/assets/img/staff.svg" alt="Total Doctors">
+                <img src="/public/assets/img/staff.svg" alt="Total Doctors">
                 Total Doctors
               </div>
               <div class="card-total-iot-devices">
-                <img src="/assets/img/iot-devices.png" alt="Total IoT Devices">
+                <img src="/public/assets/img/iot-devices.png" alt="Total IoT Devices">
                 Total IoT Devices
               </div>
           </div>
@@ -110,6 +113,9 @@
                     <i class="ri-file-upload-line"></i>
                   </button>
 
+                  <i class="ri-search-line search-icon"></i>
+                  <input type="text" id="search-doctor" placeholder="ID or Name">
+                </div>
               </div>
               <table class="doctor-table">
                 <thead>
@@ -143,12 +149,22 @@
           </div>
         </div>
         
+
+      <!-- Pop Up Logout -->
+      <div id="custom-popup" class="popup">
+        <div class="popup-content">
+          <span class="close-btn" id="close-btn">
+            See you next time!
+          </span>
+          <p id="popup-message"></p>
+        </div>
+      </div>
       </main>
       <footer>
         <p>Copyright &copy; <span id="year"></span> IOT_23 HCMC University of Technology and Education</p>
       </footer>
     </body>
-    <script src="/static/script.js" defer></script>
-    <script type="module" src="/static/admin.js" defer></script>
+    <script src="/public/static/script.js" defer></script>
+    <script type="module" src="/public/static/admin.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </html>
