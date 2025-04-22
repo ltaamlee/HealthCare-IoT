@@ -1,3 +1,11 @@
+<<<<<<< HEAD
 id,name,email,phone,password
-DT1,John Doe,john@example.com,123456789,secret123
-DT2,Jane Smith,jane@example.com,987654321,securepass
+DT01,Nguyễn Văn A,nguyenvana@gmail.com,0912345678,abc123
+DT02,Trần Thị B,tranthib@gmail.com,0987654321,pass456
+DT03,Lê Minh C,leminhc@gmail.com,0933334444,xyz789
+=======
+id,name,email,phone
+DT01,Nguyễn Văn A,nguyenvana@gmail.com,0912345678
+DT02,Trần Thị B,tranthib@gmail.com,0987654321
+DT03,Lê Minh C,leminhc@gmail.com,0933334444
+>>>>>>> f3d4c85101d14c58556c4b6e909168453260790b

@@ -83,6 +83,18 @@ h1 {
     text-align: center;
 }
 
+<<<<<<< HEAD
+=======
+.right-section {
+    display: flex;
+    flex-direction: column;  
+    align-items: center; 
+    justify-content: center; 
+    padding: 1rem;
+    height: 100%;
+}
+
+>>>>>>> f3d4c85101d14c58556c4b6e909168453260790b
 .nav__logo{
     padding: 0;
 }

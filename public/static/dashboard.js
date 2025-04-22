@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -20,8 +20,6 @@ const db = getDatabase(app);
 document.addEventListener("DOMContentLoaded", () => {
   const greetingText = document.getElementById("name");
 
-
-  // ========== Greeting by Current Time and Name ==========
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const userId = user.uid;
@@ -57,43 +55,5 @@ document.addEventListener("DOMContentLoaded", () => {
       greetingText.textContent = "Hello, Guest!";
     }
   });
-
-  // ========== Log Out ==========
-  const popup = document.getElementById("custom-popup");
-  const close_btn = document.getElementById("close-btn");
-  const popup_message = document.getElementById("popup-message");
-  
-  function showPopup(message) {
-    popup_message.textContent = message; 
-    popup.style.display = "flex"; 
-  }
-
-  close_btn.addEventListener("click", () => {
-      popup.style.display = "none"; 
-  });
-
-  window.addEventListener("click", (event) => {
-      if (event.target === popup) {
-          popup.style.display = "none";
-      }
-  });
-
-  const logout_btn = document.getElementById("logout");
-  logout_btn?.addEventListener("click", () => {
-      signOut(auth)
-          .then(() => {
-              showPopup("Logout!");
-              setTimeout(() => {
-                  window.location.href = "/public/page/home.html";
-              }, 2000);
-          })
-          .catch((error) => {
-              console.error("Lỗi khi đăng xuất:", error);
-              showPopup("Lỗi đăng xuất: " + error.message);
-          });
-  });
-
-  
-
 });
   
