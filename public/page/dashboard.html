@@ -44,9 +44,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="line-chart"></div>
-                  <div class="card-value" id="bpm">75 bpm</div>
-                </div>
+                  <div class="card-value" id="bpm">-- bpm</div>                </div>
               </div>
             
               <!-- Temperature Card -->
@@ -59,8 +57,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="line-chart"></div>
-                  <div class="card-value" id="temp">37,1°</div>
+                  <div class="card-value" id="temp">--°</div>
                 </div>
               </div>
             
@@ -74,8 +71,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="line-chart"></div>
-                  <div class="card-value" id="spo2">98%</div>
+                  <div class="card-value" id="spo2">--%</div>
                 </div>
               </div>
             
@@ -89,8 +85,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="line-chart"></div>
-                  <div class="card-value" id="activity">Walking</div>
+                  <div class="card-value" id="activity">--</div>
                 </div>
               </div>
             </div>  
@@ -102,9 +97,11 @@
                   <h3>Health Chart</h3>
               </div>
             </div>
-            
+        
+            <div class="noti">
+              Notification from Doctor:
+            </div>
           </div>
-
         </div>
         <!-- Pop Up Logout -->
         <div id="custom-popup" class="popup">
@@ -122,4 +119,5 @@
     </body>
     <script src="/public/static/script.js" defer></script>
     <script type="module" src="/public/static/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </html>

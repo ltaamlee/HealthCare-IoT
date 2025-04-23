@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getDatabase, ref, set, remove, onValue, get, push } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     loadDoctors();
-      
+
 });
 
 // Delete patient
