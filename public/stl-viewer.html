@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>STL Viewer</title>
+  <style>
+    html, body { margin: 0; height: 100%; }
+    #viewer { width: 100vw; height: 100vh; display: block; }
+  </style>
+</head>
+<body>
+  <div id="viewer"></div>
+
+  <!-- Import thư viện Three.js + STL loader từ CDN -->
+  <script type="module">
+    import * as THREE from 'https://cdn.skypack.dev/three@0.153.0';
+    import { STLLoader } from 'https://cdn.skypack.dev/three@0.153.0/examples/jsm/loaders/STLLoader.js';
+    import { OrbitControls } from 'https://cdn.skypack.dev/three@0.153.0/examples/jsm/controls/OrbitControls.js';
+
+    const container = document.getElementById('viewer');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
+
+    const loader = new STLLoader();
+    loader.load('./model.stl', (geometry) => {
+      const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+    });
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    camera.position.set(0, 0, 100);
+    controls.update();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

@@ -18,6 +18,11 @@
         </nav>
       </header>
       <main>
+
+        <div class="noti">
+          <p>Notification from Doctor:</p>
+        </div>
+
         <div class="container">
           <div class="sidebar">
             <button class="menu-item : active">
@@ -30,11 +35,6 @@
               <i class="ri-logout-box-line" id="logout"></i>
             </button>
           </div>   
-
-          <div class="noti">
-            Notification from Doctor:
-          </div>
-
           <div class="main-dashboard">
             <div class="left-section">
               
@@ -99,6 +99,10 @@
                 <div class="card-header">
                 </div>
                   <h3>Health Chart</h3>
+                  <canvas id="chart-heart" height="100" className="hidden"></canvas>
+                  <canvas id="chart-temp" height="100"></canvas>
+                  <canvas id="chart-spo2" height="100"></canvas>
+                  <canvas id="chart-activity" height="100"></canvas>
               </div>
             </div>
       

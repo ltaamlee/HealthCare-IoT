@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
- import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
- import { getDatabase, ref, get, set, onValue, off} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getDatabase, ref, get, set, onValue, off} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
  
- const firebaseConfig = {
+const firebaseConfig = {
      apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
      authDomain: "health-care-iot-1b260.firebaseapp.com",
      databaseURL: "https://health-care-iot-1b260-default-rtdb.firebaseio.com",
@@ -11,7 +11,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebas
      messagingSenderId: "62331061840",
      appId: "1:62331061840:web:dca9e1513510938ef7b355",
      measurementId: "G-9HMZFPDN7Z"
- };
+};
  
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
  
-  // ========== Log Out ==========
+  // ==================== Log Out ====================
   const popup = document.getElementById("custom-popup");
   const close_btn = document.getElementById("close-btn");
   const popup_message = document.getElementById("popup-message");
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // ========= Load Data from Esp ========
+  // =================== Load Data from Esp ==================
   // Function to update the Firebase record with new data
 
 
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
   
-  // Data in firebase
+  // ========== Data in firebase ==========
   function updateCardValues(data) {
     // Update Heart
     const heartRate = data["heart-rate"].value;
@@ -168,10 +168,105 @@ document.addEventListener("DOMContentLoaded", () => {
   
   //   updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
   // }, 5000);
+
+  // =========================================
   
   const userId = "testPatientId";
   listenToRealtimeData(userId);
 
+
+  let chartData = {
+    labels: [], // timestamp sẽ hiển thị ở trục X
+    heart: [],
+    temp: [],
+    spo2: [],
+    activity: []
+  };
+  
+  let chartHeart, chartTemp, chartSpO2, chartActivity;
+  function createCharts() {
+    const ctxHeart = document.getElementById("chart-heart").getContext("2d");
+    const ctxTemp = document.getElementById("chart-temp").getContext("2d");
+    const ctxSpO2 = document.getElementById("chart-spo2").getContext("2d");
+    const ctxActivity = document.getElementById("chart-activity").getContext("2d");
+  
+    chartHeart = new Chart(ctxHeart, {
+      type: 'line',
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          label: 'Heart Rate (bpm)',
+          data: chartData.heart,
+          borderColor: 'red',
+          fill: false
+        }]
+      }
+    });
+  
+    chartTemp = new Chart(ctxTemp, {
+      type: 'line',
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: chartData.temp,
+          borderColor: 'orange',
+          fill: false
+        }]
+      }
+    });
+  
+    chartSpO2 = new Chart(ctxSpO2, {
+      type: 'line',
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          label: 'SPO2 (%)',
+          data: chartData.spo2,
+          borderColor: 'blue',
+          fill: false
+        }]
+      }
+    });
+  
+    chartActivity = new Chart(ctxActivity, {
+      type: 'line',
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          label: 'Activity',
+          data: chartData.activity,
+          borderColor: 'green',
+          fill: false
+        }]
+      }
+    });
+  }
+
+  function updateCharts(data) {
+    const now = new Date().toLocaleTimeString();
+    chartData.labels.push(now);
+    chartData.heart.push(data["heart-rate"].value);
+    chartData.temp.push(data["temp-rate"].value);
+    chartData.spo2.push(data["spo2-rate"].value);
+    chartData.activity.push(data["activity-rate"].value === "yes" ? 1 : 0);
+  
+    // Giới hạn số điểm hiển thị
+    if (chartData.labels.length > 10) {
+      chartData.labels.shift();
+      chartData.heart.shift();
+      chartData.temp.shift();
+      chartData.spo2.shift();
+      chartData.activity.shift();
+    }
+  
+    chartHeart.update();
+    chartTemp.update();
+    chartSpO2.update();
+    chartActivity.update();
+  }
+
+  createCharts();
   window.addEventListener("beforeunload", () => {
     const recordRef = ref(db, `records/${userId}`);
     off(recordRef);

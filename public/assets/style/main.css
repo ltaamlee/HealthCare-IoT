@@ -135,10 +135,26 @@ body{
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+.noti{
+  font-family: var(--heading-font);
+  font-size: var(--heading3-size);
+  font-weight:var(--font-semi-bold);
+  color: red;
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  height: auto;
+  width: 1320px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  font-family: var(--body-font);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ebe6e6;
+  margin: 0 6rem 2rem;
+}
+
 .main-dashboard {
   display: grid;
   grid-template-columns: 1.5fr 2fr; 
-  grid-template-rows: 0.2fr 0.2fr;
   gap: 2rem;
   margin: 0 6rem;
 }
@@ -150,12 +166,12 @@ body{
   gap: 2rem;
 }
 
+
 .heart-card,
 .temp-card,
 .spo2-card,
 .act-card,
-.right-section,
-.noti{
+.right-section{
   background: transparent;
   backdrop-filter: blur(10px);
   border-radius: 1.5rem;
