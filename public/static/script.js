@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderer: 'svg',
     loop: true,
     autoplay: true,
-    path: '/public/static/404.json' 
+    path: '/static/404.json' 
   });
 
   const popup = document.getElementById("popup");

@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => {
                 showPopup("Logout!");
                 setTimeout(() => {
-                    window.location.href = "/public/page/home.html";
+                    window.location.href = "/page/home.html";
                 }, 2000);
             })
             .catch((error) => {

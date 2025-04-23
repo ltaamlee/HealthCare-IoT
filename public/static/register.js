@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const user = userCredential.user;
                 writePatientData(user.uid, username, email, password, phone, dob, gender, height, weight, admittedate);
                 alert("Register success!");
-                window.location.href = "/public/page/login.html";
+                window.location.href = "/page/login.html";
             })
             .catch((error) => {
                 alert("Error: " + error.message);

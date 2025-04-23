@@ -38,14 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const role = idTokenResult.claims.role;
                 if (role === "admin") {
                     alert("✅ Admin login succeeded!");
-                    window.location.href = "/public/page/admin.html";
+                    window.location.href = "/page/admin.html";
                 } else if (role === "doctor") {
                     alert("👤 Doctor login succeeded!");
-                    window.location.href = "/public/page/doctor.html";
+                    window.location.href = "/page/doctor.html";
                 }
                 else {
                     alert("👤 Patient login succeeded!");
-                    window.location.href = "/public/page/dashboard.html";
+                    window.location.href = "/page/dashboard.html";
                 }
             })
             .catch((error) => {
