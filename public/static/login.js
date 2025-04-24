@@ -18,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 
 const auth = getAuth(app);
-const db = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then((idTokenResult) => {
                 const role = idTokenResult.claims.role;
-                console.log("User Role:", role);
                 if (role === "admin") {
                     alert("✅ Admin login succeeded!");
                     window.location.href = "/page/admin.html";
@@ -44,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("👤 Doctor login succeeded!");
                     window.location.href = "/page/doctor.html";
                 }
-                else {
+                else if (role == "patient"){
                     alert("👤 Patient login succeeded!");
                     window.location.href = "/page/dashboard.html";
                 }

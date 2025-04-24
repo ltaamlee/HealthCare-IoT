@@ -19,14 +19,13 @@ const auth = getAuth();
 
 // Action in main dashboard
 document.addEventListener("DOMContentLoaded", function () {
-
     const greetingText = document.getElementById("name");
     
     // ========== Greeting by Current Time and Name ==========
     onAuthStateChanged(auth, (user) => {
     if (user) {
         const userId = user.uid;
-        const dbRef = ref(db, 'doctors/' + userId);
+        const dbRef = ref(db, 'patients/' + userId);
 
         get(dbRef).then((snapshot) => {
         if (snapshot.exists()) {

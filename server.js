@@ -1,7 +1,6 @@
 const express = require('express');
 const admin = require('firebase-admin');
 const cors = require('cors');
-const functions = require('firebase-functions');
 
 const app = express();
 app.use(cors());
@@ -14,6 +13,7 @@ admin.initializeApp({
 
   databaseURL: "https://health-care-iot-1b260-default-rtdb.firebaseio.com"
 });
+
 
 app.delete('/delete-patient/:uid', async (req, res) => {
     const uid = req.params.uid;
