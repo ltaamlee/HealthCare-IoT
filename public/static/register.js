@@ -49,6 +49,7 @@ function writePatientData(userId, name, email, password, phone, dob, gender, hei
     height: height,
     weight: weight,
     createdAt: Date.now(),
+    id_doctor: 'abc',
     role: "patient"
     })
     .then(() => {
@@ -103,6 +104,36 @@ const dphone = "094785236";
 
 writeDoctorData(dId, dname, demail, dpassword, dphone);
 
+// add records into db when register
+function createDefaultRecord(uid) {
+    const defaultData = {
+        "heart-rate": {
+            timestamp: Date.now(),
+            value: 80,
+        },
+        "temp-rate": {
+            timestamp: Date.now(),
+            value: 36.8,
+        },
+        "spo2-rate": {
+            timestamp: Date.now(),
+            value: 98,
+        },
+        "activity-rate": {
+            timestamp: Date.now(),
+            value: "no",
+        },
+};
+
+set(ref(db, "records/" + uid), defaultData)
+    .then(() => {
+    console.log("✅ Record initialized for patient:", uid);
+    })
+    .catch((err) => {
+    console.error("❌ Failed to create record:", err);
+    });
+}
+
 // ====================================================================== //
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("form");
@@ -129,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((userCredential) => {
                 const user = userCredential.user;
                 writePatientData(user.uid, username, email, password, phone, dob, gender, height, weight, admittedate);
+                createDefaultRecord(user.uid);
                 alert("Register success!");
                 window.location.href = "/page/login.html";
             })
@@ -137,5 +169,4 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Registration error:", error);
             });
         });
-
 });

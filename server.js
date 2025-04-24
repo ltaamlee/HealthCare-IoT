@@ -28,6 +28,38 @@ app.delete('/delete-patient/:uid', async (req, res) => {
 });
 
 
+
+app.post('/add-doctor', async (req, res) => {
+    const { name, email, phone, password } = req.body;
+
+    try {
+        const userRecord = await admin.auth().createUser({
+            email,
+            password,
+            displayName: name,
+            phoneNumber: phone
+        });
+
+        const uid = userRecord.uid;
+
+        await admin.auth().setCustomUserClaims(uid, { role: 'doctor' });
+
+        await admin.database().ref(`doctors/${uid}`).set({
+            uid,
+            name,
+            email,
+            phone,
+            role: "doctor"
+        });
+
+        res.status(200).json({ message: "✅ Thêm bác sĩ thành công!", uid });
+    } catch (err) {
+        console.error("❌ Lỗi khi thêm bác sĩ:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 app.delete("/delete-doctor/:uid", async (req, res) => {
     const uid = req.params.uid;
   

@@ -135,6 +135,8 @@
                     <td>
                       <button onclick="editDoctor(this)">Edit</button>
                       <button onclick="deleteDoctor(this)">Delete</button>
+                      <button onclick="openAssignModal('PATIENT_ID_HERE')">Phân công bác sĩ</button>
+
                     </td>
                   </tr>
                 </tbody>
@@ -146,6 +148,16 @@
           </div>
         </div>
         
+
+      <!-- Modal -->
+      <div id="assignModal" style="display:none;">
+        <h3>Chọn bác sĩ phụ trách</h3>
+        <select id="doctorSelect">
+          <option disabled selected>-- Chọn bác sĩ --</option>
+        </select>
+        <button onclick="assignDoctor()">Xác nhận</button>
+        <button onclick="closeAssignModal()">Hủy</button>
+      </div>
 
       <!-- Pop Up Logout -->
       <div id="custom-popup" class="popup">

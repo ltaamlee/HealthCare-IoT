@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getDatabase, ref, get} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBKLtIDvC1cit3bxQvpVU4TkrsJVO67OFA",
@@ -18,6 +18,7 @@ const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 
 const auth = getAuth(app);
+const db = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submit");
@@ -29,20 +30,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = document.getElementById("password").value;
 
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 const user = userCredential.user;
-                return user.getIdTokenResult();
-            })
-            .then((idTokenResult) => {
-                const role = idTokenResult.claims.role;
+
+                const idTokenResult = await user.getIdTokenResult();
+                const claims = idTokenResult.claims;
+
+                let role = "patient"; // default fallback
+
+                if (claims.role === "admin") {
+                    role = "admin";
+                } else {
+
+                // Not admin, check doctors
+                    const doctorSnap = await get(ref(db, "doctors"));
+                    if (doctorSnap.exists()) {
+                        const doctors = doctorSnap.val();
+                        for (const id in doctors) {
+                        if (doctors[id].uid === user.uid) {
+                            role = "doctor";
+                            break;
+                        }
+                        }
+                    }
+                }
+
                 if (role === "admin") {
                     alert("✅ Admin login succeeded!");
                     window.location.href = "/page/admin.html";
                 } else if (role === "doctor") {
-                    alert("👤 Doctor login succeeded!");
+                    alert("👨‍⚕️ Doctor login succeeded!");
                     window.location.href = "/page/doctor.html";
-                }
-                else if (role == "patient"){
+                } else {
                     alert("👤 Patient login succeeded!");
                     window.location.href = "/page/dashboard.html";
                 }

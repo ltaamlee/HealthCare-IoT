@@ -18,14 +18,14 @@ const auth = getAuth();
 const db = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-   const greetingText = document.getElementById("name");
+  const greetingText = document.getElementById("name");
  
   // ========== Greeting by Current Time and Name ==========
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const userId = user.uid;
       const dbRef = ref(db, 'patients/' + userId);
-
+      console.log(userId);
       get(dbRef).then((snapshot) => {
         if (snapshot.exists()) {
           const userData = snapshot.val();
@@ -51,10 +51,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }).catch((error) => {
         console.error("❌ Error getting user data:", error);
       });
+
+      listenToRealtimeData(userId);
+
+      // setInterval(() => {
+      //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60);
+      //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1);
+      //   const spo2Rate = Math.floor(Math.random() * (100 - 90 + 1) + 90);
+      //   const activityRate = Math.random() > 0.5 ? "yes" : "no";
+  
+      //   updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
+      // }, 10000);
+  
+
     } else {
       console.warn("⚠️ No user is logged in.");
       greetingText.textContent = "Hello, Guest!";
     }
+
   });
  
   // ==================== Log Out ====================
@@ -155,6 +169,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("activity").innerText = activityRate === "yes" ? "Falled" : "Normal";
 
     updateCardStyles(data);
+
+    function sendDoctorNotification(doctorId, message) {
+      const notiId = Date.now(); 
+      const notiRef = ref(db, `notifications/${doctorId}/${notiId}`);
+      set(notiRef, {
+        message: message,
+        timestamp: notiId,
+        read: false
+      }).then(() => {
+        console.log("📨 Gửi cảnh báo đến bác sĩ thành công.");
+      }).catch((err) => {
+        console.error("❌ Lỗi gửi cảnh báo:", err);
+      });
+    }
   }
   
   
@@ -181,8 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const userId = "testPatientId";
-  listenToRealtimeData(userId);
+  // const userId = "testUserId";
+  // listenToRealtimeData(userId);
     
   let chartData = {
     labels: [], 
@@ -289,22 +317,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const actCard = document.querySelector(".act-card");
   
     if (heartCard) {
-      if (heartRate > 120 || heartRate < 50) heartCard.classList.add("danger");
+      if (heartRate > 120 || heartRate < 50){
+        heartCard.classList.add("danger");
+        sendDoctorNotification(userData.id_doctor, `🚨 Nhịp tim bất thường: ${heartRate} bpm`);
+      }
       else heartCard.classList.remove("danger");
     }
   
     if (tempCard) {
-      if (tempRate < 36.0 || tempRate > 37.8) tempCard.classList.add("danger");
+      if (tempRate < 36.0 || tempRate > 37.8){
+        tempCard.classList.add("danger");
+        sendDoctorNotification(userData.id_doctor, `🚨 Nhiệt độ bất thường: ${tempRate} C`);
+      }
       else tempCard.classList.remove("danger");
     }
   
     if (spo2Card) {
-      if (spo2Rate < 90) spo2Card.classList.add("danger");
+      if (spo2Rate < 90){
+        spo2Card.classList.add("danger");
+        sendDoctorNotification(userData.id_doctor, `🚨 Nồng độ oxy bất thường: ${spo2Rate} C`);
+      } 
       else spo2Card.classList.remove("danger");
     }
   
     if (actCard) {
-      if (activityRate === "yes") actCard.classList.add("danger");
+      if (activityRate === "yes"){
+        actCard.classList.add("danger");
+        sendDoctorNotification(userData.id_doctor, `🚨 Nghi ngờ té ngã: ${activityRate} C`);
+      }
       else actCard.classList.remove("danger");
     }
   }
@@ -314,6 +354,83 @@ document.addEventListener("DOMContentLoaded", () => {
     const recordRef = ref(db, `records/${userId}`);
     off(recordRef);
   });
+
+ 
+  window.markAsRead = function (notiId) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const notiRef = ref(db, `notifications/${user.uid}/${notiId}/read`);
+        set(notiRef, true)
+          .then(() => {
+            console.log("🔵 Đã đánh dấu là đã đọc:", notiId);
+          })
+          .catch((err) => {
+            console.error("❌ Lỗi đánh dấu đã đọc:", err);
+          });
+      }
+    });
+  };
+  
+  const toggleBtn = document.getElementById("toggle-noti-btn");
+  const notiList = document.getElementById("notification-list");
+  const badge = document.getElementById("noti-badge");
+  
+  toggleBtn.addEventListener("click", () => {
+    notiList.classList.toggle("show");
+  
+    const unreadItems = notiList.querySelectorAll("button:not(.read-tag)").length;
+    if (!notiList.classList.contains("show") && unreadItems > 0) {
+      badge.style.display = "inline-block";
+      badge.innerText = unreadItems;
+    } else {
+      badge.style.display = "none";
+    }
+  });
+  
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const notiRef = ref(db, `notifications/${user.uid}`);
+      
+      // change
+      onValue(notiRef, (snapshot) => {
+        const notifications = snapshot.val();
+        notiList.innerHTML = "";
+        let unreadCount = 0;
+  
+        if (notifications) {
+
+          const notiArray = Object.entries(notifications).map(([notiId, noti]) => ({ notiId, ...noti }));
+  
+          notiArray.forEach(({ notiId, message, timestamp, read }) => {
+            const item = document.createElement("li");
+            item.classList.add("slide-in");
+            item.innerHTML = `
+              <span>${message}</span><br/>
+              <small>${new Date(timestamp).toLocaleString()}</small><br/>
+              ${read ? '<span class="read-tag">Readed</span>' : '<button onclick="markAsRead(\'' + notiId + '\')">Marked</button>'}
+            `;
+            if (!read) unreadCount++;
+  
+            notiList.insertBefore(item, notiList.firstChild);
+          });
+  
+          // Show badge 
+          if (unreadCount > 0) {
+            badge.style.display = "inline-block";
+            badge.innerText = unreadCount;
+          } else {
+            badge.style.display = "none";
+          }
+          
+  
+        } else {
+          notiList.innerHTML = "<li>Không có thông báo nào</li>";
+          badge.style.display = "none";
+        }
+      });
+    }
+  });
+
 });
 
 
