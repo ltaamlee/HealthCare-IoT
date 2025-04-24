@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logout_btn?.addEventListener("click", () => {
         signOut(auth)
             .then(() => {
-                showPopup("Logout!");
+                showPopup("");
                 setTimeout(() => {
                     window.location.href = "/page/home.html";
                 }, 2000);

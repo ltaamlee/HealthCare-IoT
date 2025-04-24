@@ -226,6 +226,7 @@ body{
   border-radius: 5px;
   width: 300px;
   text-align: center;
+  font-family: var(--body-font);
 }
 
 .close-btn:hover,
