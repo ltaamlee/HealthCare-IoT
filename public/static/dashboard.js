@@ -130,6 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // ========== Data in firebase ==========
+
+  const thresholds = {
+    heartRate: { min: 60, max: 100 },    
+    tempRate: { min: 36.5, max: 37.5 },  
+    spo2Rate: { min: 95 },               
+  };
+
   function updateCardValues(data) {
     // Update Heart
     const heartRate = data["heart-rate"].value;
@@ -146,8 +153,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update Activity
     const activityRate = data["activity-rate"].value;
     document.getElementById("activity").innerText = activityRate === "yes" ? "Nghi ngờ té" : "Bình thường";
+
+    updateCardStyles(data);
   }
   
+    
+  setInterval(() => {
+    const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 90); // Nhịp tim ngẫu nhiên từ 60 đến 100 bpm
+    const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1); // Nhiệt độ ngẫu nhiên từ 36.5°C đến 37.5°C
+    const spo2Rate = Math.floor(Math.random() * (100 - 90 + 1) + 90); // SPO2 ngẫu nhiên từ 90% đến 100%
+    const activityRate = Math.random() > 0.5 ? "yes" : "no"; // Hoạt động ngẫu nhiên
+  
+    updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
+  }, 5000);
+
+  // =========================================
+  
+
   function listenToRealtimeData(userId) {
     const recordRef = ref(db, `records/${userId}`);
     
@@ -159,24 +181,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  
-  // setInterval(() => {
-  //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60); // Nhịp tim ngẫu nhiên từ 60 đến 100 bpm
-  //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1); // Nhiệt độ ngẫu nhiên từ 36.5°C đến 37.5°C
-  //   const spo2Rate = Math.floor(Math.random() * (100 - 90 + 1) + 90); // SPO2 ngẫu nhiên từ 90% đến 100%
-  //   const activityRate = Math.random() > 0.5 ? "yes" : "no"; // Hoạt động ngẫu nhiên
-  
-  //   updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
-  // }, 5000);
 
-  // =========================================
-  
   const userId = "testPatientId";
   listenToRealtimeData(userId);
-
-
+    
   let chartData = {
-    labels: [], // timestamp sẽ hiển thị ở trục X
+    labels: [], 
     heart: [],
     temp: [],
     spo2: [],
@@ -242,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  
 
   function updateCharts(data) {
     const now = new Date().toLocaleTimeString();
@@ -251,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chartData.spo2.push(data["spo2-rate"].value);
     chartData.activity.push(data["activity-rate"].value === "yes" ? 1 : 0);
   
-    // Giới hạn số điểm hiển thị
+
     if (chartData.labels.length > 10) {
       chartData.labels.shift();
       chartData.heart.shift();
@@ -271,6 +282,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const recordRef = ref(db, `records/${userId}`);
     off(recordRef);
   });
+
+  function updateCardStyles(data) {
+    const heartRate = data["heart-rate"].value;
+    const tempRate = data["temp-rate"].value;
+    const spo2Rate = data["spo2-rate"].value;
+    const activityRate = data["activity-rate"].value;
+  
+    const heartCard = document.querySelector(".heart-card");
+    const tempCard = document.querySelector(".temp-card");
+    const spo2Card = document.querySelector(".spo2-card");
+    const actCard = document.querySelector(".act-card");
+  
+    if (heartCard) {
+      if (heartRate > 120 || heartRate < 50) heartCard.classList.add("danger");
+      else heartCard.classList.remove("danger");
+    }
+  
+    if (tempCard) {
+      if (tempRate < 36.0 || tempRate > 37.8) tempCard.classList.add("danger");
+      else tempCard.classList.remove("danger");
+    }
+  
+    if (spo2Card) {
+      if (spo2Rate < 90) spo2Card.classList.add("danger");
+      else spo2Card.classList.remove("danger");
+    }
+  
+    if (actCard) {
+      if (activityRate === "yes") actCard.classList.add("danger");
+      else actCard.classList.remove("danger");
+    }
+  }
+  
 });
 
 
