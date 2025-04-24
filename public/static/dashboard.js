@@ -153,9 +153,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update Activity
     const activityRate = data["activity-rate"].value;
     document.getElementById("activity").innerText = activityRate === "yes" ? "Nghi ngờ té" : "Bình thường";
+
+    updateCardStyles(data);
   }
   
-    
+  
   // setInterval(() => {
   //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60); // Nhịp tim ngẫu nhiên từ 60 đến 100 bpm
   //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1); // Nhiệt độ ngẫu nhiên từ 36.5°C đến 37.5°C
@@ -166,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // }, 5000);
 
   // =========================================
-  
 
   function listenToRealtimeData(userId) {
     const recordRef = ref(db, `records/${userId}`);
@@ -250,6 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  
 
   function updateCharts(data) {
     const now = new Date().toLocaleTimeString();
@@ -279,6 +281,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const recordRef = ref(db, `records/${userId}`);
     off(recordRef);
   });
+
+  function updateCardStyles(data) {
+    const heartRate = data["heart-rate"].value;
+    const tempRate = data["temp-rate"].value;
+    const spo2Rate = data["spo2-rate"].value;
+    const activityRate = data["activity-rate"].value;
+  
+    const heartCard = document.querySelector(".heart-card");
+    const tempCard = document.querySelector(".temp-card");
+    const spo2Card = document.querySelector(".spo2-card");
+    const actCard = document.querySelector(".act-card");
+  
+    if (heartCard) {
+      if (heartRate > 120 || heartRate < 50) heartCard.classList.add("danger");
+      else heartCard.classList.remove("danger");
+    }
+  
+    if (tempCard) {
+      if (tempRate < 36.0 || tempRate > 37.8) tempCard.classList.add("danger");
+      else tempCard.classList.remove("danger");
+    }
+  
+    if (spo2Card) {
+      if (spo2Rate < 90) spo2Card.classList.add("danger");
+      else spo2Card.classList.remove("danger");
+    }
+  
+    if (actCard) {
+      if (activityRate === "yes") actCard.classList.add("danger");
+      else actCard.classList.remove("danger");
+    }
+  }
+  
 });
 
 

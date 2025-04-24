@@ -244,3 +244,12 @@ body{
   width: 100%;
   height: 300px; 
 }
+
+.heart-card.danger,
+.spo2-card.danger,
+.temp-card.danger,
+.act-card.danger {
+  background-color: #ffcccc !important;
+  border: 2px solid #dd1c1c !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
