@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Update Activity
     const activityRate = data["activity-rate"].value;
-    document.getElementById("activity").innerText = activityRate === "yes" ? "Nghi ngờ té" : "Bình thường";
+    document.getElementById("activity").innerText = activityRate === "yes" ? "Falled" : "Normal";
 
     updateCardStyles(data);
   }
@@ -276,11 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chartActivity.update();
   }
 
-  createCharts();
-  window.addEventListener("beforeunload", () => {
-    const recordRef = ref(db, `records/${userId}`);
-    off(recordRef);
-  });
 
   function updateCardStyles(data) {
     const heartRate = data["heart-rate"].value;
@@ -313,7 +308,12 @@ document.addEventListener("DOMContentLoaded", () => {
       else actCard.classList.remove("danger");
     }
   }
-  
+
+  createCharts();
+  window.addEventListener("beforeunload", () => {
+    const recordRef = ref(db, `records/${userId}`);
+    off(recordRef);
+  });
 });
 
 

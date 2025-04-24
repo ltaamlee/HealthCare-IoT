@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then((idTokenResult) => {
                 const role = idTokenResult.claims.role;
+                console.log("User Role:", role);
                 if (role === "admin") {
                     alert("✅ Admin login succeeded!");
                     window.location.href = "/page/admin.html";

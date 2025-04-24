@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logout_btn?.addEventListener("click", () => {
         signOut(auth)
             .then(() => {
-                showPopup("Logout!");
+                showPopup("");
                 setTimeout(() => {
                     window.location.href = "/page/home.html";
                 }, 2000);
@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_patient = document.getElementById("search-patient");
     const patientBody = document.getElementById("patient-table-body");
     const noResultPatientRow = document.getElementById("no-patient-result");
-
 
     function searchTable(inputElement, tableBody, noResultRow, columnIndices) {
         const filter = inputElement.value.toLowerCase();
@@ -134,8 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
     input_patient.addEventListener("keyup", function () {
         searchTable(input_patient, patientBody, noResultPatientRow, [1, 2]);
     });
-
-
 
     // Add patient to table from form register
     // ========== Amitted Date ==========
@@ -188,26 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     loadPatients();
 
-    // function sendPatient(button) {
-    //     const row = button.closest("tr");
-    //     const patientId = row.children[1].textContent; 
-    //     const patientName = row.children[2].textContent; 
-    
-
-    //     const notiPanel = document.getElementById("sendNotificationPanel");
-    //     const notiTitle = document.getElementById("noti-patient-title");
-    //     notiTitle.textContent = `Send notification to ${patientName} (${patientId})`;
-    
-
-    //     const sendBtn = document.getElementById("send_noti");
-    //     sendBtn.setAttribute("data-patient-id", patientId);
-    
-    //     notiPanel.classList.remove("hidden");
-    // }
-    
-    const sendBtn = document.getElementById("send_noti");
-    sendBtn.addEventListener("click", () => {
-        const patientId = sendBtn.getAttribute("data-patient-id");
+    const send_btn = document.getElementById("send_noti");
+    send_btn.addEventListener("click", () => {
+        // const patientId = sendBtn.getAttribute("data-patient-id");
         const notiText = document.getElementById("noti").value;
 
         if (!notiText.trim()) {
@@ -216,14 +196,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Close a notification
     const note_btn = document.getElementById("close_noti");
     note_btn?.addEventListener("click", () => {
         const panel = document.getElementById("sendNotificationPanel");
         panel.classList.add("hidden");
+        const navContent = document.querySelector(".nav_content");
+        navContent.classList.remove("active");
     });
-    
+
 
 });
+
+window.detailPatient = function detailPatient(button) {
+    const row = button.closest("tr");
+    const patientId = row.cells[1].textContent;
+    if (patientId){
+        window.location.href = `/page/dashboard.html?id=${patientId}`;    }
+}
 
 window.sendPatient = function sendPatient(button) {
     const navContent = document.querySelector(".nav_content");

@@ -206,7 +206,6 @@ body{
   color: white;
 }
 
-
 .popup {
   display: none; 
   position: fixed;
@@ -227,6 +226,7 @@ body{
   width: 300px;
   text-align: center;
   font-family: var(--body-font);
+  font-weight: var(--font-bold);
 }
 
 .close-btn:hover,

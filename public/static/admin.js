@@ -348,8 +348,6 @@ window.deletePatient = async function (btn) {
             alert("Lỗi khi xóa: " + error.message);
         }
     }
-
-    updateTotals();
 };
 
 // Edit doctor
@@ -395,5 +393,4 @@ window.deleteDoctor = async function (btn) {
             alert("Lỗi khi xóa: " + error.message);
         }
     }
-    updateTotals();
 };
