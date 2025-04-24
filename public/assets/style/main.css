@@ -152,6 +152,12 @@ body{
   margin: 0 6rem 2rem;
 }
 
+
+.container{
+  width: 100%;
+  margin: 0 auto;
+}
+
 .main-dashboard {
   display: grid;
   grid-template-columns: 1.5fr 2fr; 
@@ -195,12 +201,9 @@ body{
   background-color: var(--white-color)
 }
 
-.heart-card:hover .card-value,
-.temp-card:hover .card-value,
-.spo2-card:hover .card-value,
-.act-card:hover .card-value{
-  background-color: var(--background-color);
-  color: var(--black-color);
+.heart-card .card-value.valid-value{
+  background-color: red;
+  color: white;
 }
 
 

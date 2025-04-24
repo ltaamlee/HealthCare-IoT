@@ -8,17 +8,29 @@
       <link rel="stylesheet" href="/assets/style/base.css">
       <link rel="stylesheet" href="/assets/style/main.css">
       <link rel="stylesheet" href="/assets/style/admin.css">
+      <link rel="stylesheet" href="/assets/style/doctor.css">
     </head>
     <body>
-      <header>
+    <header> 
         <nav class="container">
-          <a href="#" class="nav__logo">
+            <a href="#" class="nav__logo">
             <img src="/assets/img/logo.png" alt="logo">
-            <span id="name">Admin Dashboard</span>
+            <span id="name"></span>
         </a>
         </nav>
-      </header>
+        </header>
       <main>
+        <div class="nav_content">
+            <div id="sendNotificationPanel" class="doctor-panel-content hidden">
+                <button id="close_noti">
+                    <i class="ri-close-large-line"></i>
+                </button>
+                <h4 id="noti-patient-title">Noti for Patient</h4>
+                <textarea id="noti" placeholder="Input notification..."></textarea>
+                <button id="send_noti">Send</button>
+            </div>
+        </div>        
+
         <div class="sidebar">
           <button class="menu-item active">
             <i class="ri-menu-line"></i>
@@ -30,24 +42,6 @@
         </div> 
 
         <div class="main-dashboard">
-
-          <div class="total">
-              <div class="card-total-patients">
-                <img src="/assets/img/patient.svg" alt="Total Patients">
-                <div></div>
-                Total Patients: <span id="total-patients">0</span>
-              </div>
-              <div class="card-total-doctors">
-                <img src="/assets/img/staff.svg" alt="Total Doctors">
-                <div></div>
-                Total Doctors: <span id="total-doctors">0</span>
-              </div>
-              <div class="card-total-iot-devices">
-                <img src="/assets/img/iot-devices.png" alt="Total IoT Devices">
-                Total IoT Devices
-              </div>
-          </div>
-
           <div class="table-account">
             <!-- Table for Patient -->
             <div class="patient">
@@ -80,8 +74,8 @@
                     <td>Male</td>
                     <td>20/04/2025</td>
                     <td>
-                      <button onclick="editPatient(this)">Edit</button>
-                      <button onclick="deletePatient(this)">Delete</button>
+                      <button onclick="detailPatient(this)">Detail</button>
+                      <button onclick="sendPatient(this)">Send Message</button>
                     </td>
                   </tr>
                 </tbody>
@@ -90,57 +84,6 @@
                 </tr>
               </table>
             </div>
-
-            <hr>
-
-            <div class="doctor">
-              <div class="table-title">
-                <h2>Doctor</h2>
-              
-                <div class="import-file">
-                  <div id="status"></div>
-                </div>
-
-                <div class="search-bar">
-                  <input type="file" id="csvFile" accept=".csv" style="display:none;" />
-
-                  <button type="button" id="import-btn" class="import-csv">
-                    Import CSV
-                    <i class="ri-file-upload-line"></i>
-                  </button>
-
-                  <i class="ri-search-line search-icon"></i>
-                  <input type="text" id="search-doctor" placeholder="ID or Name">
-                </div>
-              </div>
-              <table class="doctor-table">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="doctor-table-body">
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <td>
-                      <button onclick="editDoctor(this)">Edit</button>
-                      <button onclick="deleteDoctor(this)">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tr id="no-doctor-result" style="display: none; text-align: center;">
-                  <td colspan="8">Not found!</td>
-                </tr>
-              </table>
             </div>
           </div>
         </div>
@@ -161,6 +104,5 @@
       </footer>
     </body>
     <script src="/static/script.js" defer></script>
-    <script type="module" src="/static/admin.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script type="module" src="/static/doctor.js" defer></script>
 </html>

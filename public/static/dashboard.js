@@ -130,6 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // ========== Data in firebase ==========
+
+  const thresholds = {
+    heartRate: { min: 60, max: 100 },    
+    tempRate: { min: 36.5, max: 37.5 },  
+    spo2Rate: { min: 95 },               
+  };
+
   function updateCardValues(data) {
     // Update Heart
     const heartRate = data["heart-rate"].value;
@@ -148,18 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("activity").innerText = activityRate === "yes" ? "Nghi ngờ té" : "Bình thường";
   }
   
-  function listenToRealtimeData(userId) {
-    const recordRef = ref(db, `records/${userId}`);
     
-    onValue(recordRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        updateCardValues(data); 
-        updateCharts(data); 
-      }
-    });
-  }
-  
   // setInterval(() => {
   //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60); // Nhịp tim ngẫu nhiên từ 60 đến 100 bpm
   //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1); // Nhiệt độ ngẫu nhiên từ 36.5°C đến 37.5°C
@@ -171,12 +167,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // =========================================
   
+
+  function listenToRealtimeData(userId) {
+    const recordRef = ref(db, `records/${userId}`);
+    
+    onValue(recordRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        updateCardValues(data); 
+        updateCharts(data); 
+      }
+    });
+  }
+
   const userId = "testPatientId";
   listenToRealtimeData(userId);
-
-
+    
   let chartData = {
-    labels: [], // timestamp sẽ hiển thị ở trục X
+    labels: [], 
     heart: [],
     temp: [],
     spo2: [],
@@ -251,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chartData.spo2.push(data["spo2-rate"].value);
     chartData.activity.push(data["activity-rate"].value === "yes" ? 1 : 0);
   
-    // Giới hạn số điểm hiển thị
+
     if (chartData.labels.length > 10) {
       chartData.labels.shift();
       chartData.heart.shift();
