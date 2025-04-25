@@ -54,15 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       listenToRealtimeData(userId);
 
-      // setInterval(() => {
-      //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60);
-      //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1);
-      //   const spo2Rate = Math.floor(Math.random() * (100 - 90 + 1) + 90);
-      //   const activityRate = Math.random() > 0.5 ? "yes" : "no";
-  
-      //   updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
-      // }, 10000);
-  
+    // setInterval(() => {
+    //   const heartRate = Math.floor(Math.random() * (100 - 60 + 1) + 60); // Nhịp tim ngẫu nhiên từ 60 đến 100 bpm
+    //   const tempRate = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1); // Nhiệt độ ngẫu nhiên từ 36.5°C đến 37.5°C
+    //   const spo2Rate = Math.floor(Math.random() * (100 - 90 + 1) + 90); // SPO2 ngẫu nhiên từ 90% đến 100%
+    //   const activityRate = Math.random() > 0.5 ? "yes" : "no"; // Hoạt động ngẫu nhiên
+    
+    //   updateRecord(userId, heartRate, tempRate, spo2Rate, activityRate);
+    // }, 5000);
 
     } else {
       console.warn("⚠️ No user is logged in.");
@@ -170,19 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCardStyles(data);
 
-    function sendDoctorNotification(doctorId, message) {
-      const notiId = Date.now(); 
-      const notiRef = ref(db, `notifications/${doctorId}/${notiId}`);
-      set(notiRef, {
-        message: message,
-        timestamp: notiId,
-        read: false
-      }).then(() => {
-        console.log("📨 Gửi cảnh báo đến bác sĩ thành công.");
-      }).catch((err) => {
-        console.error("❌ Lỗi gửi cảnh báo:", err);
-      });
-    }
+    // function sendDoctorNotification(doctorId, message) {
+    //   const notiId = Date.now(); 
+    //   const notiRef = ref(db, `notifications/${doctorId}/${notiId}`);
+    //   set(notiRef, {
+    //     message: message,
+    //     timestamp: notiId,
+    //     read: false
+    //   }).then(() => {
+    //     console.log("📨 Gửi cảnh báo đến bác sĩ thành công.");
+    //   }).catch((err) => {
+    //     console.error("❌ Lỗi gửi cảnh báo:", err);
+    //   });
+    // }
   }
   
   
@@ -209,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // const userId = "testUserId";
-  // listenToRealtimeData(userId);
+  const userId = "testUserId";
+  listenToRealtimeData(userId);
     
   let chartData = {
     labels: [], 
@@ -288,7 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chartData.temp.push(data["temp-rate"].value);
     chartData.spo2.push(data["spo2-rate"].value);
     chartData.activity.push(data["activity-rate"].value === "yes" ? 1 : 0);
-  
 
     if (chartData.labels.length > 10) {
       chartData.labels.shift();
@@ -319,7 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (heartCard) {
       if (heartRate > 120 || heartRate < 50){
         heartCard.classList.add("danger");
-        sendDoctorNotification(userData.id_doctor, `🚨 Nhịp tim bất thường: ${heartRate} bpm`);
       }
       else heartCard.classList.remove("danger");
     }
@@ -327,7 +324,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tempCard) {
       if (tempRate < 36.0 || tempRate > 37.8){
         tempCard.classList.add("danger");
-        sendDoctorNotification(userData.id_doctor, `🚨 Nhiệt độ bất thường: ${tempRate} C`);
       }
       else tempCard.classList.remove("danger");
     }
@@ -335,7 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (spo2Card) {
       if (spo2Rate < 90){
         spo2Card.classList.add("danger");
-        sendDoctorNotification(userData.id_doctor, `🚨 Nồng độ oxy bất thường: ${spo2Rate} C`);
       } 
       else spo2Card.classList.remove("danger");
     }
@@ -343,7 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (actCard) {
       if (activityRate === "yes"){
         actCard.classList.add("danger");
-        sendDoctorNotification(userData.id_doctor, `🚨 Nghi ngờ té ngã: ${activityRate} C`);
       }
       else actCard.classList.remove("danger");
     }
@@ -397,8 +391,9 @@ document.addEventListener("DOMContentLoaded", () => {
         notiList.innerHTML = "";
         let unreadCount = 0;
   
+        const badge = document.getElementById("notification-badge"); 
+  
         if (notifications) {
-
           const notiArray = Object.entries(notifications).map(([notiId, noti]) => ({ notiId, ...noti }));
   
           notiArray.forEach(({ notiId, message, timestamp, read }) => {
@@ -407,27 +402,25 @@ document.addEventListener("DOMContentLoaded", () => {
             item.innerHTML = `
               <span>${message}</span><br/>
               <small>${new Date(timestamp).toLocaleString()}</small><br/>
-              ${read ? '<span class="read-tag">Readed</span>' : '<button onclick="markAsRead(\'' + notiId + '\')">Marked</button>'}
+              ${read ? '<span class="read-tag">Readed</span>' : `<button onclick="markAsRead('${notiId}')">Marked</button>`}
             `;
-            if (!read) unreadCount++;
   
+            if (!read) unreadCount++;
             notiList.insertBefore(item, notiList.firstChild);
           });
-  
-          // Show badge 
+
           if (unreadCount > 0) {
             badge.style.display = "inline-block";
-            badge.innerText = unreadCount;
+            badge.textContent = unreadCount;
           } else {
             badge.style.display = "none";
           }
-          
   
         } else {
-          notiList.innerHTML = "<li>Không có thông báo nào</li>";
+          notiList.innerHTML = "<li>📪 No notification</li>";
           badge.style.display = "none";
         }
-      });
+      });  
     }
   });
 

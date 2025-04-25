@@ -124,21 +124,20 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!read) unreadCount++;
           });
         } else {
-          notiList.innerHTML = "<li>Không có thông báo nào</li>";
+          notiList.innerHTML = "<li>📪 No notification</li>";
         }
 
         badge.style.display = unreadCount > 0 ? "inline-block" : "none";
         badge.innerText = unreadCount;
       });
 
-      // ✅ Load bệnh nhân
       loadPatients();
 
-      // ✅ Gửi thông báo
+
       send_btn.addEventListener("click", () => {
         const notiText = document.getElementById("noti").value.trim();
         if (!notiText || !selectedPatientId) {
-          alert("Vui lòng chọn bệnh nhân và nhập nội dung!");
+          alert("Please select a patient and enter a message!");
           return;
         }
 
@@ -149,13 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
           timestamp: Date.now(),
           read: false
         }).then(() => {
-          alert("✅ Gửi thông báo thành công!");
+          alert("✅ Notification sent successfully!");
           document.getElementById("noti").value = "";
           document.getElementById("sendNotificationPanel").classList.add("hidden");
           document.querySelector(".nav_content").classList.remove("active");
         }).catch((err) => {
-          console.error("❌ Gửi lỗi:", err);
-          alert("❌ Gửi thất bại.");
+          console.error("❌ Error!:", err);
+          alert("❌ Failed to send notification");
         });
       });
     }
