@@ -397,8 +397,9 @@ document.addEventListener("DOMContentLoaded", () => {
         notiList.innerHTML = "";
         let unreadCount = 0;
   
+        const badge = document.getElementById("notification-badge"); // ✅ moved here
+  
         if (notifications) {
-
           const notiArray = Object.entries(notifications).map(([notiId, noti]) => ({ notiId, ...noti }));
   
           notiArray.forEach(({ notiId, message, timestamp, read }) => {
@@ -407,29 +408,30 @@ document.addEventListener("DOMContentLoaded", () => {
             item.innerHTML = `
               <span>${message}</span><br/>
               <small>${new Date(timestamp).toLocaleString()}</small><br/>
-              ${read ? '<span class="read-tag">Readed</span>' : '<button onclick="markAsRead(\'' + notiId + '\')">Marked</button>'}
+              ${read ? '<span class="read-tag">Readed</span>' : `<button onclick="markAsRead('${notiId}')">Marked</button>`}
             `;
-            if (!read) unreadCount++;
   
+            if (!read) unreadCount++;
             notiList.insertBefore(item, notiList.firstChild);
           });
   
-          // Show badge 
+          // ✅ Update badge
           if (unreadCount > 0) {
             badge.style.display = "inline-block";
-            badge.innerText = unreadCount;
+            badge.textContent = unreadCount;
           } else {
             badge.style.display = "none";
           }
-          
   
         } else {
           notiList.innerHTML = "<li>Không có thông báo nào</li>";
           badge.style.display = "none";
         }
-      });
+      });  
     }
   });
+
+  
 
 });
 
