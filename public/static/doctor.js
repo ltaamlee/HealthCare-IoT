@@ -149,13 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
           timestamp: Date.now(),
           read: false
         }).then(() => {
-          alert("✅ Gửi thông báo thành công!");
+          alert("✅ Notification sent successfully!");
           document.getElementById("noti").value = "";
           document.getElementById("sendNotificationPanel").classList.add("hidden");
           document.querySelector(".nav_content").classList.remove("active");
         }).catch((err) => {
-          console.error("❌ Gửi lỗi:", err);
-          alert("❌ Gửi thất bại.");
+          console.error("❌ Error!:", err);
+          alert("❌ Failed to send notification");
         });
       });
     }
